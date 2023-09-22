@@ -9,6 +9,9 @@ export const accountCapabilitiesSchema = z.object({
   acss_debit_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
+  affirm_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
   afterpay_clearpay_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
@@ -21,6 +24,12 @@ export const accountCapabilitiesSchema = z.object({
   bancontact_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
+  bank_transfer_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  blik_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
   boleto_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
@@ -31,6 +40,9 @@ export const accountCapabilitiesSchema = z.object({
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
   cartes_bancaires_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  cashapp_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
   eps_payments: z
@@ -48,16 +60,34 @@ export const accountCapabilitiesSchema = z.object({
   ideal_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
+  india_international_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
   jcb_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
+  klarna_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  konbini_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
   legacy_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  link_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
   oxxo_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
   p24_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  paynow_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  promptpay_payments: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
   sepa_debit_payments: z
@@ -75,11 +105,15 @@ export const accountCapabilitiesSchema = z.object({
   transfers: z
     .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
     .optional(),
-});
-
-export const accountControllerSchema = z.object({
-  is_controller: z.boolean().optional(),
-  type: z.union([z.literal("account"), z.literal("application")]).optional(),
+  treasury: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  us_bank_account_ach_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
+  zip_payments: z
+    .union([z.literal("active"), z.literal("inactive"), z.literal("pending")])
+    .optional(),
 });
 
 export const accountDashboardSettingsSchema = z.object({
@@ -99,21 +133,38 @@ export const accountLinkSchema = z.object({
   url: z.string(),
 });
 
+export const accountMonthlyEstimatedRevenueSchema = z.object({
+  amount: z.number(),
+  currency: z.string(),
+});
+
 export const accountPaymentsSettingsSchema = z.object({
   statement_descriptor: z.string().optional().nullable(),
   statement_descriptor_kana: z.string().optional().nullable(),
   statement_descriptor_kanji: z.string().optional().nullable(),
+  statement_descriptor_prefix_kana: z.string().optional().nullable(),
+  statement_descriptor_prefix_kanji: z.string().optional().nullable(),
+});
+
+export const accountRequirementsAlternativeSchema = z.object({
+  alternative_fields_due: z.array(z.string()),
+  original_fields_due: z.array(z.string()),
 });
 
 export const accountRequirementsErrorSchema = z.object({
   code: z.union([
     z.literal("invalid_address_city_state_postal_code"),
+    z.literal("invalid_dob_age_under_18"),
+    z.literal("invalid_representative_country"),
     z.literal("invalid_street_address"),
+    z.literal("invalid_tos_acceptance"),
     z.literal("invalid_value_other"),
+    z.literal("verification_directors_mismatch"),
     z.literal("verification_document_address_mismatch"),
     z.literal("verification_document_address_missing"),
     z.literal("verification_document_corrupt"),
     z.literal("verification_document_country_not_supported"),
+    z.literal("verification_document_directors_mismatch"),
     z.literal("verification_document_dob_mismatch"),
     z.literal("verification_document_duplicate_type"),
     z.literal("verification_document_expired"),
@@ -139,6 +190,7 @@ export const accountRequirementsErrorSchema = z.object({
     z.literal("verification_document_photo_mismatch"),
     z.literal("verification_document_too_large"),
     z.literal("verification_document_type_not_supported"),
+    z.literal("verification_extraneous_directors"),
     z.literal("verification_failed_address_match"),
     z.literal("verification_failed_business_iec_number"),
     z.literal("verification_failed_document_match"),
@@ -147,8 +199,10 @@ export const accountRequirementsErrorSchema = z.object({
     z.literal("verification_failed_keyed_match"),
     z.literal("verification_failed_name_match"),
     z.literal("verification_failed_other"),
+    z.literal("verification_failed_residential_address"),
     z.literal("verification_failed_tax_id_match"),
     z.literal("verification_failed_tax_id_not_issued"),
+    z.literal("verification_missing_directors"),
     z.literal("verification_missing_executives"),
     z.literal("verification_missing_owners"),
     z.literal("verification_requires_additional_memorandum_of_associations"),
@@ -161,11 +215,26 @@ export const accountSepaDebitPaymentsSettingsSchema = z.object({
   creditor_id: z.string().optional(),
 });
 
+export const accountTermsOfServiceSchema = z.object({
+  date: z.number().optional().nullable(),
+  ip: z.string().optional().nullable(),
+  user_agent: z.string().optional(),
+});
+
 export const accountTosAcceptanceSchema = z.object({
   date: z.number().optional().nullable(),
   ip: z.string().optional().nullable(),
   service_agreement: z.string().optional(),
   user_agent: z.string().optional().nullable(),
+});
+
+export const accountTreasurySettingsSchema = z.object({
+  tos_acceptance: accountTermsOfServiceSchema.optional(),
+});
+
+export const accountUnificationAccountControllerSchema = z.object({
+  is_controller: z.boolean().optional(),
+  type: z.union([z.literal("account"), z.literal("application")]),
 });
 
 export const addressSchema = z.object({
@@ -208,6 +277,40 @@ export const balanceAmountBySourceTypeSchema = z.object({
   fpx: z.number().optional(),
 });
 
+export const bankConnectionsResourceBalanceApiResourceCashBalanceSchema = z.object(
+  {
+    available: z.record(z.number()).optional().nullable(),
+  }
+);
+
+export const bankConnectionsResourceBalanceApiResourceCreditBalanceSchema = z.object(
+  {
+    used: z.record(z.number()).optional().nullable(),
+  }
+);
+
+export const bankConnectionsResourceBalanceRefreshSchema = z.object({
+  last_attempted_at: z.number(),
+  status: z.union([
+    z.literal("failed"),
+    z.literal("pending"),
+    z.literal("succeeded"),
+  ]),
+});
+
+export const bankConnectionsResourceLinkAccountSessionFiltersSchema = z.object({
+  countries: z.array(z.string()).optional().nullable(),
+});
+
+export const bankConnectionsResourceOwnershipRefreshSchema = z.object({
+  last_attempted_at: z.number(),
+  status: z.union([
+    z.literal("failed"),
+    z.literal("pending"),
+    z.literal("succeeded"),
+  ]),
+});
+
 export const billingDetailsSchema = z.object({
   address: addressSchema.optional().nullable(),
   email: z.string().optional().nullable(),
@@ -215,14 +318,27 @@ export const billingDetailsSchema = z.object({
   phone: z.string().optional().nullable(),
 });
 
-export const bitcoinTransactionSchema = z.object({
-  amount: z.number(),
-  bitcoin_amount: z.number(),
-  created: z.number(),
-  currency: z.string(),
-  id: z.string(),
-  object: z.literal("bitcoin_transaction"),
-  receiver: z.string(),
+export const cancellationDetailsSchema = z.object({
+  comment: z.string().optional().nullable(),
+  feedback: z
+    .union([
+      z.literal("customer_service"),
+      z.literal("low_quality"),
+      z.literal("missing_features"),
+      z.literal("other"),
+      z.literal("switched_service"),
+      z.literal("too_complex"),
+      z.literal("too_expensive"),
+      z.literal("unused"),
+    ])
+    .optional(),
+  reason: z
+    .union([
+      z.literal("cancellation_requested"),
+      z.literal("payment_disputed"),
+      z.literal("payment_failed"),
+    ])
+    .optional(),
 });
 
 export const cardIssuingAccountTermsOfServiceSchema = z.object({
@@ -240,6 +356,9 @@ export const chargeFraudDetailsSchema = z.object({
 
 export const checkoutAcssDebitMandateOptionsSchema = z.object({
   custom_mandate_url: z.string().optional(),
+  default_for: z
+    .array(z.union([z.literal("invoice"), z.literal("subscription")]))
+    .optional(),
   interval_description: z.string().optional().nullable(),
   payment_schedule: z
     .union([
@@ -256,6 +375,13 @@ export const checkoutAcssDebitMandateOptionsSchema = z.object({
 export const checkoutAcssDebitPaymentMethodOptionsSchema = z.object({
   currency: z.union([z.literal("cad"), z.literal("usd")]).optional(),
   mandate_options: checkoutAcssDebitMandateOptionsSchema.optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
   verification_method: z
     .union([
       z.literal("automatic"),
@@ -263,6 +389,144 @@ export const checkoutAcssDebitPaymentMethodOptionsSchema = z.object({
       z.literal("microdeposits"),
     ])
     .optional(),
+});
+
+export const checkoutAffirmPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutAfterpayClearpayPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutAlipayPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutAuBecsDebitPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutBacsDebitPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const checkoutBancontactPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutBoletoPaymentMethodOptionsSchema = z.object({
+  expires_after_days: z.number(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const checkoutCardInstallmentsOptionsSchema = z.object({
+  enabled: z.boolean().optional(),
+});
+
+export const checkoutCardPaymentMethodOptionsSchema = z.object({
+  installments: checkoutCardInstallmentsOptionsSchema.optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+  statement_descriptor_suffix_kana: z.string().optional(),
+  statement_descriptor_suffix_kanji: z.string().optional(),
+});
+
+export const checkoutCashappPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutEpsPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutFpxPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutGiropayPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutGrabPayPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutIdealPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutKlarnaPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const checkoutKonbiniPaymentMethodOptionsSchema = z.object({
+  expires_after_days: z.number().optional().nullable(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutLinkPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
+});
+
+export const checkoutOxxoPaymentMethodOptionsSchema = z.object({
+  expires_after_days: z.number(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutP24PaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutPaynowPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutPixPaymentMethodOptionsSchema = z.object({
+  expires_after_seconds: z.number().optional().nullable(),
+});
+
+export const checkoutSepaDebitPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const checkoutSofortPaymentMethodOptionsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const connectEmbeddedBaseConfigClaimSchema = z.object({
+  enabled: z.boolean(),
 });
 
 export const countrySpecVerificationFieldDetailsSchema = z.object({
@@ -278,6 +542,58 @@ export const countrySpecVerificationFieldsSchema = z.object({
 export const couponAppliesToSchema = z.object({
   products: z.array(z.string()),
 });
+
+export const couponCurrencyOptionSchema = z.object({
+  amount_off: z.number(),
+});
+
+export const customUnitAmountSchema = z.object({
+  maximum: z.number().optional().nullable(),
+  minimum: z.number().optional().nullable(),
+  preset: z.number().optional().nullable(),
+});
+
+export const customerBalanceCustomerBalanceSettingsSchema = z.object({
+  reconciliation_mode: z.union([z.literal("automatic"), z.literal("manual")]),
+  using_merchant_default: z.boolean(),
+});
+
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransferSchema = z.object(
+  {
+    bic: z.string().optional().nullable(),
+    iban_last4: z.string().optional().nullable(),
+    sender_name: z.string().optional().nullable(),
+  }
+);
+
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransferSchema = z.object(
+  {
+    account_number_last4: z.string().optional().nullable(),
+    sender_name: z.string().optional().nullable(),
+    sort_code: z.string().optional().nullable(),
+  }
+);
+
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransferSchema = z.object(
+  {
+    sender_bank: z.string().optional().nullable(),
+    sender_branch: z.string().optional().nullable(),
+    sender_name: z.string().optional().nullable(),
+  }
+);
+
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferSchema = z.object(
+  {
+    network: z
+      .union([
+        z.literal("ach"),
+        z.literal("domestic_wire_us"),
+        z.literal("swift"),
+      ])
+      .optional(),
+    sender_name: z.string().optional().nullable(),
+  }
+);
 
 export const customerTaxLocationSchema = z.object({
   country: z.string(),
@@ -296,16 +612,17 @@ export const deletedAccountSchema = z.object({
   object: z.literal("account"),
 });
 
-export const deletedAlipayAccountSchema = z.object({
-  deleted: z.literal(true),
-  id: z.string(),
-  object: z.literal("alipay_account"),
-});
-
 export const deletedApplePayDomainSchema = z.object({
   deleted: z.literal(true),
   id: z.string(),
   object: z.literal("apple_pay_domain"),
+});
+
+export const deletedApplicationSchema = z.object({
+  deleted: z.literal(true),
+  id: z.string(),
+  name: z.string().optional().nullable(),
+  object: z.literal("application"),
 });
 
 export const deletedBankAccountSchema = z.object({
@@ -313,12 +630,6 @@ export const deletedBankAccountSchema = z.object({
   deleted: z.literal(true),
   id: z.string(),
   object: z.literal("bank_account"),
-});
-
-export const deletedBitcoinReceiverSchema = z.object({
-  deleted: z.literal(true),
-  id: z.string(),
-  object: z.literal("bitcoin_receiver"),
 });
 
 export const deletedCardSchema = z.object({
@@ -358,9 +669,7 @@ export const deletedInvoiceitemSchema = z.object({
 });
 
 export const deletedPaymentSourceSchema = z.union([
-  deletedAlipayAccountSchema,
   deletedBankAccountSchema,
-  deletedBitcoinReceiverSchema,
   deletedCardSchema,
 ]);
 
@@ -400,18 +709,6 @@ export const deletedRadarValueListItemSchema = z.object({
   object: z.literal("radar.value_list_item"),
 });
 
-export const deletedRecipientSchema = z.object({
-  deleted: z.literal(true),
-  id: z.string(),
-  object: z.literal("recipient"),
-});
-
-export const deletedSkuSchema = z.object({
-  deleted: z.literal(true),
-  id: z.string(),
-  object: z.literal("sku"),
-});
-
 export const deletedSubscriptionItemSchema = z.object({
   deleted: z.literal(true),
   id: z.string(),
@@ -422,6 +719,12 @@ export const deletedTaxIdSchema = z.object({
   deleted: z.literal(true),
   id: z.string(),
   object: z.literal("tax_id"),
+});
+
+export const deletedTerminalConfigurationSchema = z.object({
+  deleted: z.literal(true),
+  id: z.string(),
+  object: z.literal("terminal.configuration"),
 });
 
 export const deletedTerminalLocationSchema = z.object({
@@ -436,17 +739,16 @@ export const deletedTerminalReaderSchema = z.object({
   object: z.literal("terminal.reader"),
 });
 
+export const deletedTestHelpersTestClockSchema = z.object({
+  deleted: z.literal(true),
+  id: z.string(),
+  object: z.literal("test_helpers.test_clock"),
+});
+
 export const deletedWebhookEndpointSchema = z.object({
   deleted: z.literal(true),
   id: z.string(),
   object: z.literal("webhook_endpoint"),
-});
-
-export const deliveryEstimateSchema = z.object({
-  date: z.string().optional(),
-  earliest: z.string().optional(),
-  latest: z.string().optional(),
-  type: z.string(),
 });
 
 export const disputeEvidenceDetailsSchema = z.object({
@@ -454,6 +756,16 @@ export const disputeEvidenceDetailsSchema = z.object({
   has_evidence: z.boolean(),
   past_due: z.boolean(),
   submission_count: z.number(),
+});
+
+export const disputePaymentMethodDetailsCardSchema = z.object({
+  brand: z.string(),
+  network_reason_code: z.string().optional().nullable(),
+});
+
+export const emailSentSchema = z.object({
+  email_sent_at: z.number(),
+  email_sent_to: z.string(),
 });
 
 export const ephemeralKeySchema = z.object({
@@ -471,12 +783,42 @@ export const exchangeRateSchema = z.object({
   rates: z.record(z.number()),
 });
 
+export const externalAccountRequirementsSchema = z.object({
+  currently_due: z.array(z.string()).optional().nullable(),
+  errors: z.array(accountRequirementsErrorSchema).optional().nullable(),
+  past_due: z.array(z.string()).optional().nullable(),
+  pending_verification: z.array(z.string()).optional().nullable(),
+});
+
 export const feeSchema = z.object({
   amount: z.number(),
   application: z.string().optional().nullable(),
   currency: z.string(),
   description: z.string().optional().nullable(),
   type: z.string(),
+});
+
+export const financialConnectionsAccountOwnerSchema = z.object({
+  email: z.string().optional().nullable(),
+  id: z.string(),
+  name: z.string(),
+  object: z.literal("financial_connections.account_owner"),
+  ownership: z.string(),
+  phone: z.string().optional().nullable(),
+  raw_address: z.string().optional().nullable(),
+  refreshed_at: z.number().optional().nullable(),
+});
+
+export const financialConnectionsAccountOwnershipSchema = z.object({
+  created: z.number(),
+  id: z.string(),
+  object: z.literal("financial_connections.account_ownership"),
+  owners: z.object({
+    data: z.array(financialConnectionsAccountOwnerSchema),
+    has_more: z.boolean(),
+    object: z.literal("list"),
+    url: z.string(),
+  }),
 });
 
 export const financialReportingFinanceReportRunRunParametersSchema = z.object({
@@ -488,6 +830,35 @@ export const financialReportingFinanceReportRunRunParametersSchema = z.object({
   payout: z.string().optional(),
   reporting_category: z.string().optional(),
   timezone: z.string().optional(),
+});
+
+export const fundingInstructionsBankTransferIbanRecordSchema = z.object({
+  account_holder_name: z.string(),
+  bic: z.string(),
+  country: z.string(),
+  iban: z.string(),
+});
+
+export const fundingInstructionsBankTransferSortCodeRecordSchema = z.object({
+  account_holder_name: z.string(),
+  account_number: z.string(),
+  sort_code: z.string(),
+});
+
+export const fundingInstructionsBankTransferSpeiRecordSchema = z.object({
+  bank_code: z.string(),
+  bank_name: z.string(),
+  clabe: z.string(),
+});
+
+export const fundingInstructionsBankTransferZenginRecordSchema = z.object({
+  account_holder_name: z.string().optional().nullable(),
+  account_number: z.string().optional().nullable(),
+  account_type: z.string().optional().nullable(),
+  bank_code: z.string().optional().nullable(),
+  bank_name: z.string().optional().nullable(),
+  branch_code: z.string().optional().nullable(),
+  branch_name: z.string().optional().nullable(),
 });
 
 export const gelatoDataDocumentReportDateOfBirthSchema = z.object({
@@ -632,6 +1003,26 @@ export const gelatoVerifiedOutputsSchema = z.object({
   last_name: z.string().optional().nullable(),
 });
 
+export const inboundTransfersPaymentMethodDetailsUsBankAccountSchema = z.object(
+  {
+    account_holder_type: z
+      .union([z.literal("company"), z.literal("individual")])
+      .optional(),
+    account_type: z
+      .union([z.literal("checking"), z.literal("savings")])
+      .optional(),
+    bank_name: z.string().optional().nullable(),
+    fingerprint: z.string().optional().nullable(),
+    last4: z.string().optional().nullable(),
+    network: z.literal("ach"),
+    routing_number: z.string().optional().nullable(),
+  }
+);
+
+export const invoiceInstallmentsCardSchema = z.object({
+  enabled: z.boolean().optional().nullable(),
+});
+
 export const invoiceItemThresholdReasonSchema = z.object({
   line_item_ids: z.array(z.string()),
   usage_gte: z.number(),
@@ -641,6 +1032,20 @@ export const invoiceLineItemPeriodSchema = z.object({
   end: z.number(),
   start: z.number(),
 });
+
+export const invoiceMandateOptionsCardSchema = z.object({
+  amount: z.number().optional().nullable(),
+  amount_type: z.union([z.literal("fixed"), z.literal("maximum")]).optional(),
+  description: z.string().optional().nullable(),
+});
+
+export const invoicePaymentMethodOptionsAcssDebitMandateOptionsSchema = z.object(
+  {
+    transaction_type: z
+      .union([z.literal("business"), z.literal("personal")])
+      .optional(),
+  }
+);
 
 export const invoicePaymentMethodOptionsBancontactSchema = z.object({
   preferred_language: z.union([
@@ -652,10 +1057,41 @@ export const invoicePaymentMethodOptionsBancontactSchema = z.object({
 });
 
 export const invoicePaymentMethodOptionsCardSchema = z.object({
+  installments: invoiceInstallmentsCardSchema.optional(),
   request_three_d_secure: z
     .union([z.literal("any"), z.literal("automatic")])
     .optional(),
 });
+
+export const invoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferSchema = z.object(
+  {
+    country: z.union([
+      z.literal("BE"),
+      z.literal("DE"),
+      z.literal("ES"),
+      z.literal("FR"),
+      z.literal("IE"),
+      z.literal("NL"),
+    ]),
+  }
+);
+
+export const invoicePaymentMethodOptionsKonbiniSchema = z.object({});
+
+export const invoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsSchema = z.object(
+  {
+    permissions: z
+      .array(
+        z.union([
+          z.literal("balances"),
+          z.literal("payment_method"),
+          z.literal("transactions"),
+        ])
+      )
+      .optional(),
+    prefetch: z.array(z.literal("balances")).optional().nullable(),
+  }
+);
 
 export const invoiceSettingCustomFieldSchema = z.object({
   name: z.string(),
@@ -663,6 +1099,14 @@ export const invoiceSettingCustomFieldSchema = z.object({
 });
 
 export const invoiceSettingQuoteSettingSchema = z.object({
+  days_until_due: z.number().optional().nullable(),
+});
+
+export const invoiceSettingRenderingOptionsSchema = z.object({
+  amount_tax_display: z.string().optional().nullable(),
+});
+
+export const invoiceSettingSubscriptionSchedulePhaseSettingSchema = z.object({
   days_until_due: z.number().optional().nullable(),
 });
 
@@ -675,42 +1119,15 @@ export const invoiceThresholdReasonSchema = z.object({
   item_reasons: z.array(invoiceItemThresholdReasonSchema),
 });
 
-export const invoicesPaymentMethodOptionsSchema = z.object({
-  bancontact: invoicePaymentMethodOptionsBancontactSchema.optional().nullable(),
-  card: invoicePaymentMethodOptionsCardSchema.optional().nullable(),
-});
-
-export const invoicesPaymentSettingsSchema = z.object({
-  payment_method_options: invoicesPaymentMethodOptionsSchema
-    .optional()
-    .nullable(),
-  payment_method_types: z
-    .array(
-      z.union([
-        z.literal("ach_credit_transfer"),
-        z.literal("ach_debit"),
-        z.literal("au_becs_debit"),
-        z.literal("bacs_debit"),
-        z.literal("bancontact"),
-        z.literal("boleto"),
-        z.literal("card"),
-        z.literal("fpx"),
-        z.literal("giropay"),
-        z.literal("ideal"),
-        z.literal("sepa_debit"),
-        z.literal("sofort"),
-        z.literal("wechat_pay"),
-      ])
-    )
-    .optional()
-    .nullable(),
-});
-
 export const invoicesResourceInvoiceTaxIdSchema = z.object({
   type: z.union([
+    z.literal("ad_nrt"),
     z.literal("ae_trn"),
+    z.literal("ar_cuit"),
     z.literal("au_abn"),
     z.literal("au_arn"),
+    z.literal("bg_uic"),
+    z.literal("bo_tin"),
     z.literal("br_cnpj"),
     z.literal("br_cpf"),
     z.literal("ca_bn"),
@@ -721,15 +1138,27 @@ export const invoicesResourceInvoiceTaxIdSchema = z.object({
     z.literal("ca_qst"),
     z.literal("ch_vat"),
     z.literal("cl_tin"),
+    z.literal("cn_tin"),
+    z.literal("co_nit"),
+    z.literal("cr_tin"),
+    z.literal("do_rcn"),
+    z.literal("ec_ruc"),
+    z.literal("eg_tin"),
     z.literal("es_cif"),
+    z.literal("eu_oss_vat"),
     z.literal("eu_vat"),
     z.literal("gb_vat"),
+    z.literal("ge_vat"),
     z.literal("hk_br"),
+    z.literal("hu_tin"),
     z.literal("id_npwp"),
     z.literal("il_vat"),
     z.literal("in_gst"),
+    z.literal("is_vat"),
     z.literal("jp_cn"),
     z.literal("jp_rn"),
+    z.literal("jp_trn"),
+    z.literal("ke_pin"),
     z.literal("kr_brn"),
     z.literal("li_uid"),
     z.literal("mx_rfc"),
@@ -738,18 +1167,40 @@ export const invoicesResourceInvoiceTaxIdSchema = z.object({
     z.literal("my_sst"),
     z.literal("no_vat"),
     z.literal("nz_gst"),
+    z.literal("pe_ruc"),
+    z.literal("ph_tin"),
+    z.literal("ro_tin"),
+    z.literal("rs_pib"),
     z.literal("ru_inn"),
     z.literal("ru_kpp"),
     z.literal("sa_vat"),
     z.literal("sg_gst"),
     z.literal("sg_uen"),
+    z.literal("si_tin"),
+    z.literal("sv_nit"),
     z.literal("th_vat"),
+    z.literal("tr_tin"),
     z.literal("tw_vat"),
+    z.literal("ua_vat"),
     z.literal("unknown"),
     z.literal("us_ein"),
+    z.literal("uy_ruc"),
+    z.literal("ve_rif"),
+    z.literal("vn_tin"),
     z.literal("za_vat"),
   ]),
   value: z.string().optional().nullable(),
+});
+
+export const invoicesResourceLineItemsCreditedItemsSchema = z.object({
+  invoice: z.string(),
+  invoice_line_items: z.array(z.string()),
+});
+
+export const invoicesResourceLineItemsProrationDetailsSchema = z.object({
+  credited_items: invoicesResourceLineItemsCreditedItemsSchema
+    .optional()
+    .nullable(),
 });
 
 export const invoicesStatusTransitionsSchema = z.object({
@@ -780,6 +1231,7 @@ export const issuingSettlementSchema = z.object({
 
 export const issuingAuthorizationAmountDetailsSchema = z.object({
   atm_fee: z.number().optional().nullable(),
+  cashback_amount: z.number().optional().nullable(),
 });
 
 export const issuingAuthorizationMerchantDataSchema = z.object({
@@ -791,6 +1243,11 @@ export const issuingAuthorizationMerchantDataSchema = z.object({
   network_id: z.string(),
   postal_code: z.string().optional().nullable(),
   state: z.string().optional().nullable(),
+  terminal_id: z.string().optional().nullable(),
+});
+
+export const issuingAuthorizationNetworkDataSchema = z.object({
+  acquiring_institution_id: z.string().optional().nullable(),
 });
 
 export const issuingAuthorizationPendingRequestSchema = z.object({
@@ -823,8 +1280,16 @@ export const issuingAuthorizationRequestSchema = z.object({
     z.literal("verification_failed"),
     z.literal("webhook_approved"),
     z.literal("webhook_declined"),
+    z.literal("webhook_error"),
     z.literal("webhook_timeout"),
   ]),
+  reason_message: z.string().optional().nullable(),
+});
+
+export const issuingAuthorizationTreasurySchema = z.object({
+  received_credits: z.array(z.string()),
+  received_debits: z.array(z.string()),
+  transaction: z.string().optional().nullable(),
 });
 
 export const issuingAuthorizationVerificationDataSchema = z.object({
@@ -850,36 +1315,30 @@ export const issuingAuthorizationVerificationDataSchema = z.object({
   ]),
 });
 
-export const issuingCardShippingSchema = z.object({
-  address: addressSchema,
-  carrier: z
+export const issuingCardApplePaySchema = z.object({
+  eligible: z.boolean(),
+  ineligible_reason: z
     .union([
-      z.literal("dhl"),
-      z.literal("fedex"),
-      z.literal("royal_mail"),
-      z.literal("usps"),
+      z.literal("missing_agreement"),
+      z.literal("missing_cardholder_contact"),
+      z.literal("unsupported_region"),
     ])
     .optional(),
-  eta: z.number().optional().nullable(),
-  name: z.string(),
-  service: z.union([
-    z.literal("express"),
-    z.literal("priority"),
-    z.literal("standard"),
-  ]),
-  status: z
+});
+
+export const issuingCardGooglePaySchema = z.object({
+  eligible: z.boolean(),
+  ineligible_reason: z
     .union([
-      z.literal("canceled"),
-      z.literal("delivered"),
-      z.literal("failure"),
-      z.literal("pending"),
-      z.literal("returned"),
-      z.literal("shipped"),
+      z.literal("missing_agreement"),
+      z.literal("missing_cardholder_contact"),
+      z.literal("unsupported_region"),
     ])
     .optional(),
-  tracking_number: z.string().optional().nullable(),
-  tracking_url: z.string().optional().nullable(),
-  type: z.union([z.literal("bulk"), z.literal("individual")]),
+});
+
+export const issuingCardShippingCustomsSchema = z.object({
+  eori_number: z.string().optional().nullable(),
 });
 
 export const issuingCardSpendingLimitSchema = z.object({
@@ -997,11 +1456,13 @@ export const issuingCardSpendingLimitSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -1026,6 +1487,12 @@ export const issuingCardSpendingLimitSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -1052,6 +1519,7 @@ export const issuingCardSpendingLimitSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -1193,6 +1661,12 @@ export const issuingCardSpendingLimitSchema = z.object({
   ]),
 });
 
+export const issuingCardWalletsSchema = z.object({
+  apple_pay: issuingCardApplePaySchema,
+  google_pay: issuingCardGooglePaySchema,
+  primary_account_identifier: z.string().optional().nullable(),
+});
+
 export const issuingCardholderAddressSchema = z.object({
   address: addressSchema,
 });
@@ -1212,6 +1686,7 @@ export const issuingCardholderRequirementsSchema = z.object({
     .union([
       z.literal("listed"),
       z.literal("rejected.listed"),
+      z.literal("requirements.past_due"),
       z.literal("under_review"),
     ])
     .optional(),
@@ -1219,6 +1694,8 @@ export const issuingCardholderRequirementsSchema = z.object({
     .array(
       z.union([
         z.literal("company.tax_id"),
+        z.literal("individual.card_issuing.user_terms_acceptance.date"),
+        z.literal("individual.card_issuing.user_terms_acceptance.ip"),
         z.literal("individual.dob.day"),
         z.literal("individual.dob.month"),
         z.literal("individual.dob.year"),
@@ -1346,11 +1823,13 @@ export const issuingCardholderSpendingLimitSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -1375,6 +1854,12 @@ export const issuingCardholderSpendingLimitSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -1401,6 +1886,7 @@ export const issuingCardholderSpendingLimitSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -1542,8 +2028,20 @@ export const issuingCardholderSpendingLimitSchema = z.object({
   ]),
 });
 
+export const issuingCardholderUserTermsAcceptanceSchema = z.object({
+  date: z.number().optional().nullable(),
+  ip: z.string().optional().nullable(),
+  user_agent: z.string().optional().nullable(),
+});
+
+export const issuingDisputeTreasurySchema = z.object({
+  debit_reversal: z.string().optional().nullable(),
+  received_debit: z.string(),
+});
+
 export const issuingTransactionAmountDetailsSchema = z.object({
   atm_fee: z.number().optional().nullable(),
+  cashback_amount: z.number().optional().nullable(),
 });
 
 export const issuingTransactionFlightDataLegSchema = z.object({
@@ -1574,6 +2072,11 @@ export const issuingTransactionReceiptDataSchema = z.object({
   unit_cost: z.number().optional().nullable(),
 });
 
+export const issuingTransactionTreasurySchema = z.object({
+  received_credit: z.string().optional().nullable(),
+  received_debit: z.string().optional().nullable(),
+});
+
 export const legalEntityDobSchema = z.object({
   day: z.number().optional().nullable(),
   month: z.number().optional().nullable(),
@@ -1590,6 +2093,27 @@ export const legalEntityJapanAddressSchema = z.object({
   town: z.string().optional().nullable(),
 });
 
+export const legalEntityUboDeclarationSchema = z.object({
+  date: z.number().optional().nullable(),
+  ip: z.string().optional().nullable(),
+  user_agent: z.string().optional().nullable(),
+});
+
+export const linkedAccountOptionsUsBankAccountSchema = z.object({
+  permissions: z
+    .array(
+      z.union([
+        z.literal("balances"),
+        z.literal("ownership"),
+        z.literal("payment_method"),
+        z.literal("transactions"),
+      ])
+    )
+    .optional(),
+  prefetch: z.array(z.literal("balances")).optional().nullable(),
+  return_url: z.string().optional(),
+});
+
 export const loginLinkSchema = z.object({
   created: z.number(),
   object: z.literal("login_link"),
@@ -1597,6 +2121,9 @@ export const loginLinkSchema = z.object({
 });
 
 export const mandateAcssDebitSchema = z.object({
+  default_for: z
+    .array(z.union([z.literal("invoice"), z.literal("subscription")]))
+    .optional(),
   interval_description: z.string().optional().nullable(),
   payment_schedule: z.union([
     z.literal("combined"),
@@ -1621,7 +2148,16 @@ export const mandateBacsDebitSchema = z.object({
   url: z.string(),
 });
 
+export const mandateCashappSchema = z.object({});
+
+export const mandateLinkSchema = z.object({});
+
 export const mandateMultiUseSchema = z.object({});
+
+export const mandatePaypalSchema = z.object({
+  billing_agreement_id: z.string().optional().nullable(),
+  payer_id: z.string().optional().nullable(),
+});
 
 export const mandateSepaDebitSchema = z.object({
   reference: z.string(),
@@ -1632,6 +2168,8 @@ export const mandateSingleUseSchema = z.object({
   amount: z.number(),
   currency: z.string(),
 });
+
+export const mandateUsBankAccountSchema = z.object({});
 
 export const networksSchema = z.object({
   available: z.array(z.string()),
@@ -1655,6 +2193,45 @@ export const onlineAcceptanceSchema = z.object({
   user_agent: z.string().optional().nullable(),
 });
 
+export const outboundPaymentsPaymentMethodDetailsFinancialAccountSchema = z.object(
+  {
+    id: z.string(),
+    network: z.literal("stripe"),
+  }
+);
+
+export const outboundPaymentsPaymentMethodDetailsUsBankAccountSchema = z.object(
+  {
+    account_holder_type: z
+      .union([z.literal("company"), z.literal("individual")])
+      .optional(),
+    account_type: z
+      .union([z.literal("checking"), z.literal("savings")])
+      .optional(),
+    bank_name: z.string().optional().nullable(),
+    fingerprint: z.string().optional().nullable(),
+    last4: z.string().optional().nullable(),
+    network: z.union([z.literal("ach"), z.literal("us_domestic_wire")]),
+    routing_number: z.string().optional().nullable(),
+  }
+);
+
+export const outboundTransfersPaymentMethodDetailsUsBankAccountSchema = z.object(
+  {
+    account_holder_type: z
+      .union([z.literal("company"), z.literal("individual")])
+      .optional(),
+    account_type: z
+      .union([z.literal("checking"), z.literal("savings")])
+      .optional(),
+    bank_name: z.string().optional().nullable(),
+    fingerprint: z.string().optional().nullable(),
+    last4: z.string().optional().nullable(),
+    network: z.union([z.literal("ach"), z.literal("us_domestic_wire")]),
+    routing_number: z.string().optional().nullable(),
+  }
+);
+
 export const packageDimensionsSchema = z.object({
   height: z.number(),
   length: z.number(),
@@ -1662,11 +2239,36 @@ export const packageDimensionsSchema = z.object({
   width: z.number(),
 });
 
+export const paymentFlowsAmountDetailsResourceTipSchema = z.object({
+  amount: z.number().optional(),
+});
+
+export const paymentFlowsAutomaticPaymentMethodsPaymentIntentSchema = z.object({
+  allow_redirects: z
+    .union([z.literal("always"), z.literal("never")])
+    .optional(),
+  enabled: z.boolean(),
+});
+
+export const paymentFlowsAutomaticPaymentMethodsSetupIntentSchema = z.object({
+  allow_redirects: z
+    .union([z.literal("always"), z.literal("never")])
+    .optional(),
+  enabled: z.boolean().optional().nullable(),
+});
+
 export const paymentFlowsPrivatePaymentMethodsAlipaySchema = z.object({});
 
 export const paymentFlowsPrivatePaymentMethodsAlipayDetailsSchema = z.object({
+  buyer_id: z.string().optional(),
   fingerprint: z.string().optional().nullable(),
   transaction_id: z.string().optional().nullable(),
+});
+
+export const paymentFlowsPrivatePaymentMethodsKlarnaDobSchema = z.object({
+  day: z.number().optional().nullable(),
+  month: z.number().optional().nullable(),
+  year: z.number().optional().nullable(),
 });
 
 export const paymentIntentNextActionAlipayHandleRedirectSchema = z.object({
@@ -1683,10 +2285,74 @@ export const paymentIntentNextActionBoletoSchema = z.object({
   pdf: z.string().optional().nullable(),
 });
 
+export const paymentIntentNextActionCardAwaitNotificationSchema = z.object({
+  charge_attempt_at: z.number().optional().nullable(),
+  customer_approval_required: z.boolean().optional().nullable(),
+});
+
+export const paymentIntentNextActionCashappQrCodeSchema = z.object({
+  expires_at: z.number(),
+  image_url_png: z.string(),
+  image_url_svg: z.string(),
+});
+
 export const paymentIntentNextActionDisplayOxxoDetailsSchema = z.object({
   expires_after: z.number().optional().nullable(),
   hosted_voucher_url: z.string().optional().nullable(),
   number: z.string().optional().nullable(),
+});
+
+export const paymentIntentNextActionKonbiniFamilymartSchema = z.object({
+  confirmation_number: z.string().optional(),
+  payment_code: z.string(),
+});
+
+export const paymentIntentNextActionKonbiniLawsonSchema = z.object({
+  confirmation_number: z.string().optional(),
+  payment_code: z.string(),
+});
+
+export const paymentIntentNextActionKonbiniMinistopSchema = z.object({
+  confirmation_number: z.string().optional(),
+  payment_code: z.string(),
+});
+
+export const paymentIntentNextActionKonbiniSeicomartSchema = z.object({
+  confirmation_number: z.string().optional(),
+  payment_code: z.string(),
+});
+
+export const paymentIntentNextActionKonbiniStoresSchema = z.object({
+  familymart: paymentIntentNextActionKonbiniFamilymartSchema
+    .optional()
+    .nullable(),
+  lawson: paymentIntentNextActionKonbiniLawsonSchema.optional().nullable(),
+  ministop: paymentIntentNextActionKonbiniMinistopSchema.optional().nullable(),
+  seicomart: paymentIntentNextActionKonbiniSeicomartSchema
+    .optional()
+    .nullable(),
+});
+
+export const paymentIntentNextActionPaynowDisplayQrCodeSchema = z.object({
+  data: z.string(),
+  hosted_instructions_url: z.string().optional().nullable(),
+  image_url_png: z.string(),
+  image_url_svg: z.string(),
+});
+
+export const paymentIntentNextActionPixDisplayQrCodeSchema = z.object({
+  data: z.string().optional(),
+  expires_at: z.number().optional(),
+  hosted_instructions_url: z.string().optional(),
+  image_url_png: z.string().optional(),
+  image_url_svg: z.string().optional(),
+});
+
+export const paymentIntentNextActionPromptpayDisplayQrCodeSchema = z.object({
+  data: z.string(),
+  hosted_instructions_url: z.string(),
+  image_url_png: z.string(),
+  image_url_svg: z.string(),
 });
 
 export const paymentIntentNextActionRedirectToUrlSchema = z.object({
@@ -1697,11 +2363,17 @@ export const paymentIntentNextActionRedirectToUrlSchema = z.object({
 export const paymentIntentNextActionVerifyWithMicrodepositsSchema = z.object({
   arrival_date: z.number(),
   hosted_verification_url: z.string(),
+  microdeposit_type: z
+    .union([z.literal("amounts"), z.literal("descriptor_code")])
+    .optional(),
 });
 
 export const paymentIntentNextActionWechatPayDisplayQrCodeSchema = z.object({
   data: z.string(),
+  hosted_instructions_url: z.string(),
   image_data_url: z.string(),
+  image_url_png: z.string(),
+  image_url_svg: z.string(),
 });
 
 export const paymentIntentNextActionWechatPayRedirectToAndroidAppSchema = z.object(
@@ -1718,6 +2390,29 @@ export const paymentIntentNextActionWechatPayRedirectToAndroidAppSchema = z.obje
 
 export const paymentIntentNextActionWechatPayRedirectToIosAppSchema = z.object({
   native_url: z.string(),
+});
+
+export const paymentIntentPaymentMethodOptionsAuBecsDebitSchema = z.object({
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const paymentIntentPaymentMethodOptionsBlikSchema = z.object({});
+
+export const paymentIntentPaymentMethodOptionsEpsSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentIntentPaymentMethodOptionsLinkSchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
 });
 
 export const paymentIntentPaymentMethodOptionsMandateOptionsAcssDebitSchema = z.object(
@@ -1743,6 +2438,354 @@ export const paymentIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema = z.
 
 export const paymentIntentPaymentMethodOptionsSepaDebitSchema = z.object({
   mandate_options: paymentIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema.optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const paymentIntentPaymentMethodOptionsUsBankAccountSchema = z.object({
+  financial_connections: linkedAccountOptionsUsBankAccountSchema.optional(),
+  preferred_settlement_speed: z
+    .union([z.literal("fastest"), z.literal("standard")])
+    .optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+  verification_method: z
+    .union([
+      z.literal("automatic"),
+      z.literal("instant"),
+      z.literal("microdeposits"),
+    ])
+    .optional(),
+});
+
+export const paymentIntentProcessingCustomerNotificationSchema = z.object({
+  approval_requested: z.boolean().optional().nullable(),
+  completes_at: z.number().optional().nullable(),
+});
+
+export const paymentLinksResourceAutomaticTaxSchema = z.object({
+  enabled: z.boolean(),
+});
+
+export const paymentLinksResourceCompletionBehaviorConfirmationPageSchema = z.object(
+  {
+    custom_message: z.string().optional().nullable(),
+  }
+);
+
+export const paymentLinksResourceCompletionBehaviorRedirectSchema = z.object({
+  url: z.string(),
+});
+
+export const paymentLinksResourceConsentCollectionSchema = z.object({
+  promotions: z.union([z.literal("auto"), z.literal("none")]).optional(),
+  terms_of_service: z
+    .union([z.literal("none"), z.literal("required")])
+    .optional(),
+});
+
+export const paymentLinksResourceCustomFieldsDropdownOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export const paymentLinksResourceCustomFieldsLabelSchema = z.object({
+  custom: z.string().optional().nullable(),
+  type: z.literal("custom"),
+});
+
+export const paymentLinksResourceCustomFieldsNumericSchema = z.object({
+  maximum_length: z.number().optional().nullable(),
+  minimum_length: z.number().optional().nullable(),
+});
+
+export const paymentLinksResourceCustomFieldsTextSchema = z.object({
+  maximum_length: z.number().optional().nullable(),
+  minimum_length: z.number().optional().nullable(),
+});
+
+export const paymentLinksResourceCustomTextPositionSchema = z.object({
+  message: z.string(),
+});
+
+export const paymentLinksResourcePaymentIntentDataSchema = z.object({
+  capture_method: z
+    .union([
+      z.literal("automatic"),
+      z.literal("automatic_async"),
+      z.literal("manual"),
+    ])
+    .optional(),
+  setup_future_usage: z
+    .union([z.literal("off_session"), z.literal("on_session")])
+    .optional(),
+});
+
+export const paymentLinksResourcePhoneNumberCollectionSchema = z.object({
+  enabled: z.boolean(),
+});
+
+export const paymentLinksResourceShippingAddressCollectionSchema = z.object({
+  allowed_countries: z.array(
+    z.union([
+      z.literal("AC"),
+      z.literal("AD"),
+      z.literal("AE"),
+      z.literal("AF"),
+      z.literal("AG"),
+      z.literal("AI"),
+      z.literal("AL"),
+      z.literal("AM"),
+      z.literal("AO"),
+      z.literal("AQ"),
+      z.literal("AR"),
+      z.literal("AT"),
+      z.literal("AU"),
+      z.literal("AW"),
+      z.literal("AX"),
+      z.literal("AZ"),
+      z.literal("BA"),
+      z.literal("BB"),
+      z.literal("BD"),
+      z.literal("BE"),
+      z.literal("BF"),
+      z.literal("BG"),
+      z.literal("BH"),
+      z.literal("BI"),
+      z.literal("BJ"),
+      z.literal("BL"),
+      z.literal("BM"),
+      z.literal("BN"),
+      z.literal("BO"),
+      z.literal("BQ"),
+      z.literal("BR"),
+      z.literal("BS"),
+      z.literal("BT"),
+      z.literal("BV"),
+      z.literal("BW"),
+      z.literal("BY"),
+      z.literal("BZ"),
+      z.literal("CA"),
+      z.literal("CD"),
+      z.literal("CF"),
+      z.literal("CG"),
+      z.literal("CH"),
+      z.literal("CI"),
+      z.literal("CK"),
+      z.literal("CL"),
+      z.literal("CM"),
+      z.literal("CN"),
+      z.literal("CO"),
+      z.literal("CR"),
+      z.literal("CV"),
+      z.literal("CW"),
+      z.literal("CY"),
+      z.literal("CZ"),
+      z.literal("DE"),
+      z.literal("DJ"),
+      z.literal("DK"),
+      z.literal("DM"),
+      z.literal("DO"),
+      z.literal("DZ"),
+      z.literal("EC"),
+      z.literal("EE"),
+      z.literal("EG"),
+      z.literal("EH"),
+      z.literal("ER"),
+      z.literal("ES"),
+      z.literal("ET"),
+      z.literal("FI"),
+      z.literal("FJ"),
+      z.literal("FK"),
+      z.literal("FO"),
+      z.literal("FR"),
+      z.literal("GA"),
+      z.literal("GB"),
+      z.literal("GD"),
+      z.literal("GE"),
+      z.literal("GF"),
+      z.literal("GG"),
+      z.literal("GH"),
+      z.literal("GI"),
+      z.literal("GL"),
+      z.literal("GM"),
+      z.literal("GN"),
+      z.literal("GP"),
+      z.literal("GQ"),
+      z.literal("GR"),
+      z.literal("GS"),
+      z.literal("GT"),
+      z.literal("GU"),
+      z.literal("GW"),
+      z.literal("GY"),
+      z.literal("HK"),
+      z.literal("HN"),
+      z.literal("HR"),
+      z.literal("HT"),
+      z.literal("HU"),
+      z.literal("ID"),
+      z.literal("IE"),
+      z.literal("IL"),
+      z.literal("IM"),
+      z.literal("IN"),
+      z.literal("IO"),
+      z.literal("IQ"),
+      z.literal("IS"),
+      z.literal("IT"),
+      z.literal("JE"),
+      z.literal("JM"),
+      z.literal("JO"),
+      z.literal("JP"),
+      z.literal("KE"),
+      z.literal("KG"),
+      z.literal("KH"),
+      z.literal("KI"),
+      z.literal("KM"),
+      z.literal("KN"),
+      z.literal("KR"),
+      z.literal("KW"),
+      z.literal("KY"),
+      z.literal("KZ"),
+      z.literal("LA"),
+      z.literal("LB"),
+      z.literal("LC"),
+      z.literal("LI"),
+      z.literal("LK"),
+      z.literal("LR"),
+      z.literal("LS"),
+      z.literal("LT"),
+      z.literal("LU"),
+      z.literal("LV"),
+      z.literal("LY"),
+      z.literal("MA"),
+      z.literal("MC"),
+      z.literal("MD"),
+      z.literal("ME"),
+      z.literal("MF"),
+      z.literal("MG"),
+      z.literal("MK"),
+      z.literal("ML"),
+      z.literal("MM"),
+      z.literal("MN"),
+      z.literal("MO"),
+      z.literal("MQ"),
+      z.literal("MR"),
+      z.literal("MS"),
+      z.literal("MT"),
+      z.literal("MU"),
+      z.literal("MV"),
+      z.literal("MW"),
+      z.literal("MX"),
+      z.literal("MY"),
+      z.literal("MZ"),
+      z.literal("NA"),
+      z.literal("NC"),
+      z.literal("NE"),
+      z.literal("NG"),
+      z.literal("NI"),
+      z.literal("NL"),
+      z.literal("NO"),
+      z.literal("NP"),
+      z.literal("NR"),
+      z.literal("NU"),
+      z.literal("NZ"),
+      z.literal("OM"),
+      z.literal("PA"),
+      z.literal("PE"),
+      z.literal("PF"),
+      z.literal("PG"),
+      z.literal("PH"),
+      z.literal("PK"),
+      z.literal("PL"),
+      z.literal("PM"),
+      z.literal("PN"),
+      z.literal("PR"),
+      z.literal("PS"),
+      z.literal("PT"),
+      z.literal("PY"),
+      z.literal("QA"),
+      z.literal("RE"),
+      z.literal("RO"),
+      z.literal("RS"),
+      z.literal("RU"),
+      z.literal("RW"),
+      z.literal("SA"),
+      z.literal("SB"),
+      z.literal("SC"),
+      z.literal("SE"),
+      z.literal("SG"),
+      z.literal("SH"),
+      z.literal("SI"),
+      z.literal("SJ"),
+      z.literal("SK"),
+      z.literal("SL"),
+      z.literal("SM"),
+      z.literal("SN"),
+      z.literal("SO"),
+      z.literal("SR"),
+      z.literal("SS"),
+      z.literal("ST"),
+      z.literal("SV"),
+      z.literal("SX"),
+      z.literal("SZ"),
+      z.literal("TA"),
+      z.literal("TC"),
+      z.literal("TD"),
+      z.literal("TF"),
+      z.literal("TG"),
+      z.literal("TH"),
+      z.literal("TJ"),
+      z.literal("TK"),
+      z.literal("TL"),
+      z.literal("TM"),
+      z.literal("TN"),
+      z.literal("TO"),
+      z.literal("TR"),
+      z.literal("TT"),
+      z.literal("TV"),
+      z.literal("TW"),
+      z.literal("TZ"),
+      z.literal("UA"),
+      z.literal("UG"),
+      z.literal("US"),
+      z.literal("UY"),
+      z.literal("UZ"),
+      z.literal("VA"),
+      z.literal("VC"),
+      z.literal("VE"),
+      z.literal("VG"),
+      z.literal("VN"),
+      z.literal("VU"),
+      z.literal("WF"),
+      z.literal("WS"),
+      z.literal("XK"),
+      z.literal("YE"),
+      z.literal("YT"),
+      z.literal("ZA"),
+      z.literal("ZM"),
+      z.literal("ZW"),
+      z.literal("ZZ"),
+    ])
+  ),
+});
+
+export const paymentLinksResourceSubscriptionDataSchema = z.object({
+  description: z.string().optional().nullable(),
+  trial_period_days: z.number().optional().nullable(),
+});
+
+export const paymentLinksResourceTaxIdCollectionSchema = z.object({
+  enabled: z.boolean(),
 });
 
 export const paymentMethodAcssDebitSchema = z.object({
@@ -1752,6 +2795,8 @@ export const paymentMethodAcssDebitSchema = z.object({
   last4: z.string().optional().nullable(),
   transit_number: z.string().optional().nullable(),
 });
+
+export const paymentMethodAffirmSchema = z.object({});
 
 export const paymentMethodAfterpayClearpaySchema = z.object({});
 
@@ -1769,6 +2814,8 @@ export const paymentMethodBacsDebitSchema = z.object({
 
 export const paymentMethodBancontactSchema = z.object({});
 
+export const paymentMethodBlikSchema = z.object({});
+
 export const paymentMethodBoletoSchema = z.object({
   tax_id: z.string(),
 });
@@ -1779,13 +2826,18 @@ export const paymentMethodCardChecksSchema = z.object({
   cvc_check: z.string().optional().nullable(),
 });
 
-export const paymentMethodCardPresentSchema = z.object({});
+export const paymentMethodCardPresentNetworksSchema = z.object({
+  available: z.array(z.string()),
+  preferred: z.string().optional().nullable(),
+});
 
 export const paymentMethodCardWalletAmexExpressCheckoutSchema = z.object({});
 
 export const paymentMethodCardWalletApplePaySchema = z.object({});
 
 export const paymentMethodCardWalletGooglePaySchema = z.object({});
+
+export const paymentMethodCardWalletLinkSchema = z.object({});
 
 export const paymentMethodCardWalletMasterpassSchema = z.object({
   billing_address: addressSchema.optional().nullable(),
@@ -1802,6 +2854,81 @@ export const paymentMethodCardWalletVisaCheckoutSchema = z.object({
   name: z.string().optional().nullable(),
   shipping_address: addressSchema.optional().nullable(),
 });
+
+export const paymentMethodCashappSchema = z.object({
+  buyer_id: z.string().optional().nullable(),
+  cashtag: z.string().optional().nullable(),
+});
+
+export const paymentMethodConfigBizPaymentMethodConfigurationDetailsSchema = z.object(
+  {
+    id: z.string(),
+    parent: z.string().optional().nullable(),
+  }
+);
+
+export const paymentMethodConfigResourceDisplayPreferenceSchema = z.object({
+  overridable: z.boolean().optional().nullable(),
+  preference: z.union([z.literal("none"), z.literal("off"), z.literal("on")]),
+  value: z.union([z.literal("off"), z.literal("on")]),
+});
+
+export const paymentMethodConfigResourcePaymentMethodPropertiesSchema = z.object(
+  {
+    available: z.boolean(),
+    display_preference: paymentMethodConfigResourceDisplayPreferenceSchema,
+  }
+);
+
+export const paymentMethodConfigurationSchema = z.object({
+  acss_debit: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  active: z.boolean(),
+  affirm: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  afterpay_clearpay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  alipay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  apple_pay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  application: z.string().optional().nullable(),
+  au_becs_debit: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  bacs_debit: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  bancontact: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  blik: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  boleto: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  card: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  cartes_bancaires: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  cashapp: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  eps: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  fpx: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  giropay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  google_pay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  grabpay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  id: z.string(),
+  id_bank_transfer: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  ideal: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  is_default: z.boolean(),
+  jcb: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  klarna: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  konbini: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  link: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  livemode: z.boolean(),
+  multibanco: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  name: z.string(),
+  netbanking: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  object: z.literal("payment_method_configuration"),
+  oxxo: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  p24: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  parent: z.string().optional().nullable(),
+  pay_by_bank: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  paynow: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  paypal: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  promptpay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  sepa_debit: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  sofort: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  upi: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  us_bank_account: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+  wechat_pay: paymentMethodConfigResourcePaymentMethodPropertiesSchema.optional(),
+});
+
+export const paymentMethodCustomerBalanceSchema = z.object({});
 
 export const paymentMethodDetailsAchCreditTransferSchema = z.object({
   account_number: z.string().optional().nullable(),
@@ -1830,7 +2957,10 @@ export const paymentMethodDetailsAcssDebitSchema = z.object({
   transit_number: z.string().optional().nullable(),
 });
 
+export const paymentMethodDetailsAffirmSchema = z.object({});
+
 export const paymentMethodDetailsAfterpayClearpaySchema = z.object({
+  order_id: z.string().optional().nullable(),
   reference: z.string().optional().nullable(),
 });
 
@@ -1848,6 +2978,8 @@ export const paymentMethodDetailsBacsDebitSchema = z.object({
   sort_code: z.string().optional().nullable(),
 });
 
+export const paymentMethodDetailsBlikSchema = z.object({});
+
 export const paymentMethodDetailsBoletoSchema = z.object({
   tax_id: z.string(),
 });
@@ -1862,6 +2994,10 @@ export const paymentMethodDetailsCardInstallmentsPlanSchema = z.object({
   count: z.number().optional().nullable(),
   interval: z.literal("month").optional(),
   type: z.literal("fixed_count"),
+});
+
+export const paymentMethodDetailsCardNetworkTokenSchema = z.object({
+  used: z.boolean(),
 });
 
 export const paymentMethodDetailsCardPresentReceiptSchema = z.object({
@@ -1891,6 +3027,8 @@ export const paymentMethodDetailsCardWalletApplePaySchema = z.object({});
 
 export const paymentMethodDetailsCardWalletGooglePaySchema = z.object({});
 
+export const paymentMethodDetailsCardWalletLinkSchema = z.object({});
+
 export const paymentMethodDetailsCardWalletMasterpassSchema = z.object({
   billing_address: addressSchema.optional().nullable(),
   email: z.string().optional().nullable(),
@@ -1907,6 +3045,13 @@ export const paymentMethodDetailsCardWalletVisaCheckoutSchema = z.object({
   shipping_address: addressSchema.optional().nullable(),
 });
 
+export const paymentMethodDetailsCashappSchema = z.object({
+  buyer_id: z.string().optional().nullable(),
+  cashtag: z.string().optional().nullable(),
+});
+
+export const paymentMethodDetailsCustomerBalanceSchema = z.object({});
+
 export const paymentMethodDetailsEpsSchema = z.object({
   bank: z
     .union([
@@ -1920,6 +3065,7 @@ export const paymentMethodDetailsEpsSchema = z.object({
       z.literal("brull_kallmus_bank_ag"),
       z.literal("btv_vier_lander_bank"),
       z.literal("capital_bank_grawe_gruppe_ag"),
+      z.literal("deutsche_bank_ag"),
       z.literal("dolomitenbank"),
       z.literal("easybank_ag"),
       z.literal("erste_bank_und_sparkassen"),
@@ -1945,10 +3091,12 @@ export const paymentMethodDetailsEpsSchema = z.object({
 export const paymentMethodDetailsFpxSchema = z.object({
   bank: z.union([
     z.literal("affin_bank"),
+    z.literal("agrobank"),
     z.literal("alliance_bank"),
     z.literal("ambank"),
     z.literal("bank_islam"),
     z.literal("bank_muamalat"),
+    z.literal("bank_of_china"),
     z.literal("bank_rakyat"),
     z.literal("bsn"),
     z.literal("cimb"),
@@ -1993,7 +3141,25 @@ export const paymentMethodDetailsInteracPresentReceiptSchema = z.object({
   transaction_status_information: z.string().optional().nullable(),
 });
 
-export const paymentMethodDetailsKlarnaSchema = z.object({});
+export const paymentMethodDetailsKlarnaSchema = z.object({
+  payment_method_category: z.string().optional().nullable(),
+  preferred_locale: z.string().optional().nullable(),
+});
+
+export const paymentMethodDetailsKonbiniStoreSchema = z.object({
+  chain: z
+    .union([
+      z.literal("familymart"),
+      z.literal("lawson"),
+      z.literal("ministop"),
+      z.literal("seicomart"),
+    ])
+    .optional(),
+});
+
+export const paymentMethodDetailsLinkSchema = z.object({
+  country: z.string().optional().nullable(),
+});
 
 export const paymentMethodDetailsMultibancoSchema = z.object({
   entity: z.string().optional().nullable(),
@@ -2038,6 +3204,18 @@ export const paymentMethodDetailsP24Schema = z.object({
   verified_name: z.string().optional().nullable(),
 });
 
+export const paymentMethodDetailsPaynowSchema = z.object({
+  reference: z.string().optional().nullable(),
+});
+
+export const paymentMethodDetailsPixSchema = z.object({
+  bank_transaction_id: z.string().optional().nullable(),
+});
+
+export const paymentMethodDetailsPromptpaySchema = z.object({
+  reference: z.string().optional().nullable(),
+});
+
 export const paymentMethodDetailsSepaDebitSchema = z.object({
   bank_code: z.string().optional().nullable(),
   branch_code: z.string().optional().nullable(),
@@ -2049,12 +3227,33 @@ export const paymentMethodDetailsSepaDebitSchema = z.object({
 
 export const paymentMethodDetailsStripeAccountSchema = z.object({});
 
+export const paymentMethodDetailsUsBankAccountSchema = z.object({
+  account_holder_type: z
+    .union([z.literal("company"), z.literal("individual")])
+    .optional(),
+  account_type: z
+    .union([z.literal("checking"), z.literal("savings")])
+    .optional(),
+  bank_name: z.string().optional().nullable(),
+  fingerprint: z.string().optional().nullable(),
+  last4: z.string().optional().nullable(),
+  routing_number: z.string().optional().nullable(),
+});
+
 export const paymentMethodDetailsWechatSchema = z.object({});
 
 export const paymentMethodDetailsWechatPaySchema = z.object({
   fingerprint: z.string().optional().nullable(),
   transaction_id: z.string().optional().nullable(),
 });
+
+export const paymentMethodDetailsZipSchema = z.object({});
+
+export const paymentMethodDomainResourcePaymentMethodStatusDetailsSchema = z.object(
+  {
+    error_message: z.string(),
+  }
+);
 
 export const paymentMethodEpsSchema = z.object({
   bank: z
@@ -2069,6 +3268,7 @@ export const paymentMethodEpsSchema = z.object({
       z.literal("brull_kallmus_bank_ag"),
       z.literal("btv_vier_lander_bank"),
       z.literal("capital_bank_grawe_gruppe_ag"),
+      z.literal("deutsche_bank_ag"),
       z.literal("dolomitenbank"),
       z.literal("easybank_ag"),
       z.literal("erste_bank_und_sparkassen"),
@@ -2093,10 +3293,12 @@ export const paymentMethodEpsSchema = z.object({
 export const paymentMethodFpxSchema = z.object({
   bank: z.union([
     z.literal("affin_bank"),
+    z.literal("agrobank"),
     z.literal("alliance_bank"),
     z.literal("ambank"),
     z.literal("bank_islam"),
     z.literal("bank_muamalat"),
+    z.literal("bank_of_china"),
     z.literal("bank_rakyat"),
     z.literal("bsn"),
     z.literal("cimb"),
@@ -2129,26 +3331,31 @@ export const paymentMethodIdealSchema = z.object({
       z.literal("ing"),
       z.literal("knab"),
       z.literal("moneyou"),
+      z.literal("n26"),
       z.literal("rabobank"),
       z.literal("regiobank"),
       z.literal("revolut"),
       z.literal("sns_bank"),
       z.literal("triodos_bank"),
       z.literal("van_lanschot"),
+      z.literal("yoursafe"),
     ])
     .optional(),
   bic: z
     .union([
       z.literal("ABNANL2A"),
       z.literal("ASNBNL21"),
+      z.literal("BITSNL2A"),
       z.literal("BUNQNL2A"),
       z.literal("FVLBNL22"),
       z.literal("HANDNL2A"),
       z.literal("INGBNL2A"),
       z.literal("KNABNL2H"),
       z.literal("MOYONL21"),
+      z.literal("NTSBDEB1"),
       z.literal("RABONL2U"),
       z.literal("RBRBNL21"),
+      z.literal("REVOIE23"),
       z.literal("REVOLT21"),
       z.literal("SNSBNL2A"),
       z.literal("TRIONL2U"),
@@ -2156,13 +3363,65 @@ export const paymentMethodIdealSchema = z.object({
     .optional(),
 });
 
-export const paymentMethodInteracPresentSchema = z.object({});
-
-export const paymentMethodOptionsAfterpayClearpaySchema = z.object({
-  reference: z.string().optional().nullable(),
+export const paymentMethodInteracPresentSchema = z.object({
+  brand: z.string().optional().nullable(),
+  cardholder_name: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  exp_month: z.number(),
+  exp_year: z.number(),
+  fingerprint: z.string().optional().nullable(),
+  funding: z.string().optional().nullable(),
+  last4: z.string().optional().nullable(),
+  networks: paymentMethodCardPresentNetworksSchema.optional().nullable(),
+  preferred_locales: z.array(z.string()).optional().nullable(),
+  read_method: z
+    .union([
+      z.literal("contact_emv"),
+      z.literal("contactless_emv"),
+      z.literal("contactless_magstripe_mode"),
+      z.literal("magnetic_stripe_fallback"),
+      z.literal("magnetic_stripe_track2"),
+    ])
+    .optional(),
 });
 
-export const paymentMethodOptionsAlipaySchema = z.object({});
+export const paymentMethodKlarnaSchema = z.object({
+  dob: paymentFlowsPrivatePaymentMethodsKlarnaDobSchema.optional().nullable(),
+});
+
+export const paymentMethodKonbiniSchema = z.object({});
+
+export const paymentMethodLinkSchema = z.object({
+  email: z.string().optional().nullable(),
+});
+
+export const paymentMethodOptionsAffirmSchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  preferred_locale: z.string().optional(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsAfterpayClearpaySchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  reference: z.string().optional().nullable(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsAlipaySchema = z.object({
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
+});
+
+export const paymentMethodOptionsBacsDebitSchema = z.object({
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
 
 export const paymentMethodOptionsBancontactSchema = z.object({
   preferred_language: z.union([
@@ -2171,10 +3430,20 @@ export const paymentMethodOptionsBancontactSchema = z.object({
     z.literal("fr"),
     z.literal("nl"),
   ]),
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
 });
 
 export const paymentMethodOptionsBoletoSchema = z.object({
   expires_after_days: z.number(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
 });
 
 export const paymentMethodOptionsCardInstallmentsSchema = z.object({
@@ -2186,15 +3455,116 @@ export const paymentMethodOptionsCardInstallmentsSchema = z.object({
   plan: paymentMethodDetailsCardInstallmentsPlanSchema.optional().nullable(),
 });
 
-export const paymentMethodOptionsCardPresentSchema = z.object({});
+export const paymentMethodOptionsCardMandateOptionsSchema = z.object({
+  amount: z.number(),
+  amount_type: z.union([z.literal("fixed"), z.literal("maximum")]),
+  description: z.string().optional().nullable(),
+  end_date: z.number().optional().nullable(),
+  interval: z.union([
+    z.literal("day"),
+    z.literal("month"),
+    z.literal("sporadic"),
+    z.literal("week"),
+    z.literal("year"),
+  ]),
+  interval_count: z.number().optional().nullable(),
+  reference: z.string(),
+  start_date: z.number(),
+  supported_types: z.array(z.literal("india")).optional().nullable(),
+});
 
-export const paymentMethodOptionsIdealSchema = z.object({});
+export const paymentMethodOptionsCardPresentSchema = z.object({
+  request_extended_authorization: z.boolean().optional().nullable(),
+  request_incremental_authorization_support: z.boolean().optional().nullable(),
+});
+
+export const paymentMethodOptionsCashappSchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+});
+
+export const paymentMethodOptionsCustomerBalanceEuBankAccountSchema = z.object({
+  country: z.union([
+    z.literal("BE"),
+    z.literal("DE"),
+    z.literal("ES"),
+    z.literal("FR"),
+    z.literal("IE"),
+    z.literal("NL"),
+  ]),
+});
+
+export const paymentMethodOptionsFpxSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsGiropaySchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsGrabpaySchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsIdealSchema = z.object({
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
+});
+
+export const paymentMethodOptionsInteracPresentSchema = z.object({});
+
+export const paymentMethodOptionsKlarnaSchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  preferred_locale: z.string().optional().nullable(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsKonbiniSchema = z.object({
+  confirmation_number: z.string().optional().nullable(),
+  expires_after_days: z.number().optional().nullable(),
+  expires_at: z.number().optional().nullable(),
+  product_description: z.string().optional().nullable(),
+  setup_future_usage: z.literal("none").optional(),
+});
 
 export const paymentMethodOptionsOxxoSchema = z.object({
   expires_after_days: z.number(),
+  setup_future_usage: z.literal("none").optional(),
 });
 
-export const paymentMethodOptionsP24Schema = z.object({});
+export const paymentMethodOptionsP24Schema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsPaynowSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsPaypalSchema = z.object({
+  capture_method: z.literal("manual").optional(),
+  preferred_locale: z.string().optional().nullable(),
+  reference: z.string().optional().nullable(),
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
+});
+
+export const paymentMethodOptionsPixSchema = z.object({
+  expires_after_seconds: z.number().optional().nullable(),
+  expires_at: z.number().optional().nullable(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsPromptpaySchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
+});
 
 export const paymentMethodOptionsSofortSchema = z.object({
   preferred_language: z
@@ -2208,6 +3578,9 @@ export const paymentMethodOptionsSofortSchema = z.object({
       z.literal("pl"),
     ])
     .optional(),
+  setup_future_usage: z
+    .union([z.literal("none"), z.literal("off_session")])
+    .optional(),
 });
 
 export const paymentMethodOptionsWechatPaySchema = z.object({
@@ -2215,6 +3588,11 @@ export const paymentMethodOptionsWechatPaySchema = z.object({
   client: z
     .union([z.literal("android"), z.literal("ios"), z.literal("web")])
     .optional(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentMethodOptionsZipSchema = z.object({
+  setup_future_usage: z.literal("none").optional(),
 });
 
 export const paymentMethodOxxoSchema = z.object({});
@@ -2251,11 +3629,66 @@ export const paymentMethodP24Schema = z.object({
     .optional(),
 });
 
+export const paymentMethodPaynowSchema = z.object({});
+
+export const paymentMethodPaypalSchema = z.object({
+  payer_email: z.string().optional().nullable(),
+  payer_id: z.string().optional().nullable(),
+});
+
+export const paymentMethodPixSchema = z.object({});
+
+export const paymentMethodPromptpaySchema = z.object({});
+
 export const paymentMethodSofortSchema = z.object({
   country: z.string().optional().nullable(),
 });
 
+export const paymentMethodUsBankAccountBlockedSchema = z.object({
+  network_code: z
+    .union([
+      z.literal("R02"),
+      z.literal("R03"),
+      z.literal("R04"),
+      z.literal("R05"),
+      z.literal("R07"),
+      z.literal("R08"),
+      z.literal("R10"),
+      z.literal("R11"),
+      z.literal("R16"),
+      z.literal("R20"),
+      z.literal("R29"),
+      z.literal("R31"),
+    ])
+    .optional(),
+  reason: z
+    .union([
+      z.literal("bank_account_closed"),
+      z.literal("bank_account_frozen"),
+      z.literal("bank_account_invalid_details"),
+      z.literal("bank_account_restricted"),
+      z.literal("bank_account_unusable"),
+      z.literal("debit_not_authorized"),
+    ])
+    .optional(),
+});
+
+export const paymentMethodUsBankAccountStatusDetailsSchema = z.object({
+  blocked: paymentMethodUsBankAccountBlockedSchema.optional(),
+});
+
 export const paymentMethodWechatPaySchema = z.object({});
+
+export const paymentMethodZipSchema = z.object({});
+
+export const paymentPagesCheckoutSessionAfterExpirationRecoverySchema = z.object(
+  {
+    allow_promotion_codes: z.boolean(),
+    enabled: z.boolean(),
+    expires_at: z.number().optional().nullable(),
+    url: z.string().optional().nullable(),
+  }
+);
 
 export const paymentPagesCheckoutSessionAutomaticTaxSchema = z.object({
   enabled: z.boolean(),
@@ -2268,57 +3701,56 @@ export const paymentPagesCheckoutSessionAutomaticTaxSchema = z.object({
     .optional(),
 });
 
-export const paymentPagesCheckoutSessionTaxIdSchema = z.object({
-  type: z.union([
-    z.literal("ae_trn"),
-    z.literal("au_abn"),
-    z.literal("au_arn"),
-    z.literal("br_cnpj"),
-    z.literal("br_cpf"),
-    z.literal("ca_bn"),
-    z.literal("ca_gst_hst"),
-    z.literal("ca_pst_bc"),
-    z.literal("ca_pst_mb"),
-    z.literal("ca_pst_sk"),
-    z.literal("ca_qst"),
-    z.literal("ch_vat"),
-    z.literal("cl_tin"),
-    z.literal("es_cif"),
-    z.literal("eu_vat"),
-    z.literal("gb_vat"),
-    z.literal("hk_br"),
-    z.literal("id_npwp"),
-    z.literal("il_vat"),
-    z.literal("in_gst"),
-    z.literal("jp_cn"),
-    z.literal("jp_rn"),
-    z.literal("kr_brn"),
-    z.literal("li_uid"),
-    z.literal("mx_rfc"),
-    z.literal("my_frp"),
-    z.literal("my_itn"),
-    z.literal("my_sst"),
-    z.literal("no_vat"),
-    z.literal("nz_gst"),
-    z.literal("ru_inn"),
-    z.literal("ru_kpp"),
-    z.literal("sa_vat"),
-    z.literal("sg_gst"),
-    z.literal("sg_uen"),
-    z.literal("th_vat"),
-    z.literal("tw_vat"),
-    z.literal("unknown"),
-    z.literal("us_ein"),
-    z.literal("za_vat"),
-  ]),
+export const paymentPagesCheckoutSessionConsentSchema = z.object({
+  promotions: z.union([z.literal("opt_in"), z.literal("opt_out")]).optional(),
+  terms_of_service: z.literal("accepted").optional(),
+});
+
+export const paymentPagesCheckoutSessionConsentCollectionSchema = z.object({
+  promotions: z.union([z.literal("auto"), z.literal("none")]).optional(),
+  terms_of_service: z
+    .union([z.literal("none"), z.literal("required")])
+    .optional(),
+});
+
+export const paymentPagesCheckoutSessionCurrencyConversionSchema = z.object({
+  amount_subtotal: z.number(),
+  amount_total: z.number(),
+  fx_rate: z.string(),
+  source_currency: z.string(),
+});
+
+export const paymentPagesCheckoutSessionCustomFieldsLabelSchema = z.object({
+  custom: z.string().optional().nullable(),
+  type: z.literal("custom"),
+});
+
+export const paymentPagesCheckoutSessionCustomFieldsNumericSchema = z.object({
+  maximum_length: z.number().optional().nullable(),
+  minimum_length: z.number().optional().nullable(),
   value: z.string().optional().nullable(),
 });
 
-export const paymentPagesCheckoutSessionTaxIdCollectionSchema = z.object({
+export const paymentPagesCheckoutSessionCustomFieldsOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
+export const paymentPagesCheckoutSessionCustomFieldsTextSchema = z.object({
+  maximum_length: z.number().optional().nullable(),
+  minimum_length: z.number().optional().nullable(),
+  value: z.string().optional().nullable(),
+});
+
+export const paymentPagesCheckoutSessionCustomTextPositionSchema = z.object({
+  message: z.string(),
+});
+
+export const paymentPagesCheckoutSessionPhoneNumberCollectionSchema = z.object({
   enabled: z.boolean(),
 });
 
-export const paymentPagesPaymentPageResourcesShippingAddressCollectionSchema = z.object(
+export const paymentPagesCheckoutSessionShippingAddressCollectionSchema = z.object(
   {
     allowed_countries: z.array(
       z.union([
@@ -2564,9 +3996,112 @@ export const paymentPagesPaymentPageResourcesShippingAddressCollectionSchema = z
   }
 );
 
+export const paymentPagesCheckoutSessionTaxIdSchema = z.object({
+  type: z.union([
+    z.literal("ad_nrt"),
+    z.literal("ae_trn"),
+    z.literal("ar_cuit"),
+    z.literal("au_abn"),
+    z.literal("au_arn"),
+    z.literal("bg_uic"),
+    z.literal("bo_tin"),
+    z.literal("br_cnpj"),
+    z.literal("br_cpf"),
+    z.literal("ca_bn"),
+    z.literal("ca_gst_hst"),
+    z.literal("ca_pst_bc"),
+    z.literal("ca_pst_mb"),
+    z.literal("ca_pst_sk"),
+    z.literal("ca_qst"),
+    z.literal("ch_vat"),
+    z.literal("cl_tin"),
+    z.literal("cn_tin"),
+    z.literal("co_nit"),
+    z.literal("cr_tin"),
+    z.literal("do_rcn"),
+    z.literal("ec_ruc"),
+    z.literal("eg_tin"),
+    z.literal("es_cif"),
+    z.literal("eu_oss_vat"),
+    z.literal("eu_vat"),
+    z.literal("gb_vat"),
+    z.literal("ge_vat"),
+    z.literal("hk_br"),
+    z.literal("hu_tin"),
+    z.literal("id_npwp"),
+    z.literal("il_vat"),
+    z.literal("in_gst"),
+    z.literal("is_vat"),
+    z.literal("jp_cn"),
+    z.literal("jp_rn"),
+    z.literal("jp_trn"),
+    z.literal("ke_pin"),
+    z.literal("kr_brn"),
+    z.literal("li_uid"),
+    z.literal("mx_rfc"),
+    z.literal("my_frp"),
+    z.literal("my_itn"),
+    z.literal("my_sst"),
+    z.literal("no_vat"),
+    z.literal("nz_gst"),
+    z.literal("pe_ruc"),
+    z.literal("ph_tin"),
+    z.literal("ro_tin"),
+    z.literal("rs_pib"),
+    z.literal("ru_inn"),
+    z.literal("ru_kpp"),
+    z.literal("sa_vat"),
+    z.literal("sg_gst"),
+    z.literal("sg_uen"),
+    z.literal("si_tin"),
+    z.literal("sv_nit"),
+    z.literal("th_vat"),
+    z.literal("tr_tin"),
+    z.literal("tw_vat"),
+    z.literal("ua_vat"),
+    z.literal("unknown"),
+    z.literal("us_ein"),
+    z.literal("uy_ruc"),
+    z.literal("ve_rif"),
+    z.literal("vn_tin"),
+    z.literal("za_vat"),
+  ]),
+  value: z.string().optional().nullable(),
+});
+
+export const paymentPagesCheckoutSessionTaxIdCollectionSchema = z.object({
+  enabled: z.boolean(),
+});
+
+export const paypalSellerProtectionSchema = z.object({
+  dispute_categories: z
+    .array(
+      z.union([z.literal("fraudulent"), z.literal("product_not_received")])
+    )
+    .optional()
+    .nullable(),
+  status: z.union([
+    z.literal("eligible"),
+    z.literal("not_eligible"),
+    z.literal("partially_eligible"),
+  ]),
+});
+
 export const periodSchema = z.object({
   end: z.number().optional().nullable(),
   start: z.number().optional().nullable(),
+});
+
+export const personFutureRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
+  currently_due: z.array(z.string()),
+  errors: z.array(accountRequirementsErrorSchema),
+  eventually_due: z.array(z.string()),
+  past_due: z.array(z.string()),
+  pending_verification: z.array(z.string()),
 });
 
 export const personRelationshipSchema = z.object({
@@ -2579,6 +4114,10 @@ export const personRelationshipSchema = z.object({
 });
 
 export const personRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
   currently_due: z.array(z.string()),
   errors: z.array(accountRequirementsErrorSchema),
   eventually_due: z.array(z.string()),
@@ -2604,8 +4143,8 @@ export const platformTaxFeeSchema = z.object({
 
 export const portalBusinessProfileSchema = z.object({
   headline: z.string().optional().nullable(),
-  privacy_policy_url: z.string(),
-  terms_of_service_url: z.string(),
+  privacy_policy_url: z.string().optional().nullable(),
+  terms_of_service_url: z.string().optional().nullable(),
 });
 
 export const portalCustomerUpdateSchema = z.object({
@@ -2613,6 +4152,7 @@ export const portalCustomerUpdateSchema = z.object({
     z.union([
       z.literal("address"),
       z.literal("email"),
+      z.literal("name"),
       z.literal("phone"),
       z.literal("shipping"),
       z.literal("tax_id"),
@@ -2621,22 +4161,77 @@ export const portalCustomerUpdateSchema = z.object({
   enabled: z.boolean(),
 });
 
+export const portalFlowsAfterCompletionHostedConfirmationSchema = z.object({
+  custom_message: z.string().optional().nullable(),
+});
+
+export const portalFlowsAfterCompletionRedirectSchema = z.object({
+  return_url: z.string(),
+});
+
+export const portalFlowsCouponOfferSchema = z.object({
+  coupon: z.string(),
+});
+
+export const portalFlowsFlowAfterCompletionSchema = z.object({
+  hosted_confirmation: portalFlowsAfterCompletionHostedConfirmationSchema
+    .optional()
+    .nullable(),
+  redirect: portalFlowsAfterCompletionRedirectSchema.optional().nullable(),
+  type: z.union([
+    z.literal("hosted_confirmation"),
+    z.literal("portal_homepage"),
+    z.literal("redirect"),
+  ]),
+});
+
+export const portalFlowsFlowSubscriptionUpdateSchema = z.object({
+  subscription: z.string(),
+});
+
+export const portalFlowsRetentionSchema = z.object({
+  coupon_offer: portalFlowsCouponOfferSchema.optional().nullable(),
+  type: z.literal("coupon_offer"),
+});
+
+export const portalFlowsSubscriptionUpdateConfirmDiscountSchema = z.object({
+  coupon: z.string().optional().nullable(),
+  promotion_code: z.string().optional().nullable(),
+});
+
+export const portalFlowsSubscriptionUpdateConfirmItemSchema = z.object({
+  id: z.string().optional().nullable(),
+  price: z.string().optional().nullable(),
+  quantity: z.number().optional(),
+});
+
 export const portalInvoiceListSchema = z.object({
   enabled: z.boolean(),
+});
+
+export const portalLoginPageSchema = z.object({
+  enabled: z.boolean(),
+  url: z.string().optional().nullable(),
 });
 
 export const portalPaymentMethodUpdateSchema = z.object({
   enabled: z.boolean(),
 });
 
-export const portalSubscriptionCancelSchema = z.object({
+export const portalSubscriptionCancellationReasonSchema = z.object({
   enabled: z.boolean(),
-  mode: z.union([z.literal("at_period_end"), z.literal("immediately")]),
-  proration_behavior: z.union([
-    z.literal("always_invoice"),
-    z.literal("create_prorations"),
-    z.literal("none"),
-  ]),
+  options: z.array(
+    z.union([
+      z.literal("customer_service"),
+      z.literal("low_quality"),
+      z.literal("missing_features"),
+      z.literal("other"),
+      z.literal("switched_service"),
+      z.literal("too_complex"),
+      z.literal("too_expensive"),
+      z.literal("unused"),
+    ])
+  ),
 });
 
 export const portalSubscriptionPauseSchema = z.object({
@@ -2656,7 +4251,16 @@ export const priceTierSchema = z.object({
   up_to: z.number().optional().nullable(),
 });
 
+export const productFeatureSchema = z.object({
+  name: z.string(),
+});
+
+export const promotionCodeCurrencyOptionSchema = z.object({
+  minimum_amount: z.number(),
+});
+
 export const promotionCodesResourceRestrictionsSchema = z.object({
+  currency_options: z.record(promotionCodeCurrencyOptionSchema).optional(),
   first_time_transaction: z.boolean(),
   minimum_amount: z.number().optional().nullable(),
   minimum_amount_currency: z.string().optional().nullable(),
@@ -2679,7 +4283,8 @@ export const quotesResourceStatusTransitionsSchema = z.object({
   finalized_at: z.number().optional().nullable(),
 });
 
-export const quotesResourceSubscriptionDataSchema = z.object({
+export const quotesResourceSubscriptionDataSubscriptionDataSchema = z.object({
+  description: z.string().optional().nullable(),
   effective_date: z.number().optional().nullable(),
   trial_period_days: z.number().optional().nullable(),
 });
@@ -2692,6 +4297,10 @@ export const radarValueListItemSchema = z.object({
   object: z.literal("radar.value_list_item"),
   value: z.string(),
   value_list: z.string(),
+});
+
+export const radarRadarOptionsSchema = z.object({
+  session: z.string().optional(),
 });
 
 export const radarReviewResourceLocationSchema = z.object({
@@ -2707,6 +4316,11 @@ export const radarReviewResourceSessionSchema = z.object({
   device: z.string().optional().nullable(),
   platform: z.string().optional().nullable(),
   version: z.string().optional().nullable(),
+});
+
+export const receivedPaymentMethodDetailsFinancialAccountSchema = z.object({
+  id: z.string(),
+  network: z.literal("stripe"),
 });
 
 export const recurringSchema = z.object({
@@ -2728,11 +4342,17 @@ export const recurringSchema = z.object({
   usage_type: z.union([z.literal("licensed"), z.literal("metered")]),
 });
 
+export const refundNextActionDisplayDetailsSchema = z.object({
+  email_sent: emailSentSchema,
+  expires_at: z.number(),
+});
+
 export const reportingReportTypeSchema = z.object({
   data_available_end: z.number(),
   data_available_start: z.number(),
   default_columns: z.array(z.string()).optional().nullable(),
   id: z.string(),
+  livemode: z.boolean(),
   name: z.string(),
   object: z.literal("reporting.report_type"),
   updated: z.number(),
@@ -2757,13 +4377,40 @@ export const schedulesPhaseAutomaticTaxSchema = z.object({
   enabled: z.boolean(),
 });
 
+export const secretServiceResourceScopeSchema = z.object({
+  type: z.union([z.literal("account"), z.literal("user")]),
+  user: z.string().optional(),
+});
+
 export const setupAttemptPaymentMethodDetailsAcssDebitSchema = z.object({});
 
 export const setupAttemptPaymentMethodDetailsAuBecsDebitSchema = z.object({});
 
 export const setupAttemptPaymentMethodDetailsBacsDebitSchema = z.object({});
 
+export const setupAttemptPaymentMethodDetailsBoletoSchema = z.object({});
+
+export const setupAttemptPaymentMethodDetailsCardWalletSchema = z.object({
+  apple_pay: paymentMethodDetailsCardWalletApplePaySchema.optional(),
+  google_pay: paymentMethodDetailsCardWalletGooglePaySchema.optional(),
+  type: z.union([
+    z.literal("apple_pay"),
+    z.literal("google_pay"),
+    z.literal("link"),
+  ]),
+});
+
+export const setupAttemptPaymentMethodDetailsCashappSchema = z.object({});
+
+export const setupAttemptPaymentMethodDetailsKlarnaSchema = z.object({});
+
+export const setupAttemptPaymentMethodDetailsLinkSchema = z.object({});
+
+export const setupAttemptPaymentMethodDetailsPaypalSchema = z.object({});
+
 export const setupAttemptPaymentMethodDetailsSepaDebitSchema = z.object({});
+
+export const setupAttemptPaymentMethodDetailsUsBankAccountSchema = z.object({});
 
 export const setupIntentNextActionRedirectToUrlSchema = z.object({
   return_url: z.string().optional().nullable(),
@@ -2773,21 +4420,40 @@ export const setupIntentNextActionRedirectToUrlSchema = z.object({
 export const setupIntentNextActionVerifyWithMicrodepositsSchema = z.object({
   arrival_date: z.number(),
   hosted_verification_url: z.string(),
-});
-
-export const setupIntentPaymentMethodOptionsCardSchema = z.object({
-  request_three_d_secure: z
-    .union([
-      z.literal("any"),
-      z.literal("automatic"),
-      z.literal("challenge_only"),
-    ])
+  microdeposit_type: z
+    .union([z.literal("amounts"), z.literal("descriptor_code")])
     .optional(),
 });
+
+export const setupIntentPaymentMethodOptionsCardMandateOptionsSchema = z.object(
+  {
+    amount: z.number(),
+    amount_type: z.union([z.literal("fixed"), z.literal("maximum")]),
+    currency: z.string(),
+    description: z.string().optional().nullable(),
+    end_date: z.number().optional().nullable(),
+    interval: z.union([
+      z.literal("day"),
+      z.literal("month"),
+      z.literal("sporadic"),
+      z.literal("week"),
+      z.literal("year"),
+    ]),
+    interval_count: z.number().optional().nullable(),
+    reference: z.string(),
+    start_date: z.number(),
+    supported_types: z.array(z.literal("india")).optional().nullable(),
+  }
+);
+
+export const setupIntentPaymentMethodOptionsLinkSchema = z.object({});
 
 export const setupIntentPaymentMethodOptionsMandateOptionsAcssDebitSchema = z.object(
   {
     custom_mandate_url: z.string().optional(),
+    default_for: z
+      .array(z.union([z.literal("invoice"), z.literal("subscription")]))
+      .optional(),
     interval_description: z.string().optional().nullable(),
     payment_schedule: z
       .union([
@@ -2806,34 +4472,73 @@ export const setupIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema = z.ob
   {}
 );
 
+export const setupIntentPaymentMethodOptionsPaypalSchema = z.object({
+  billing_agreement_id: z.string().optional().nullable(),
+});
+
 export const setupIntentPaymentMethodOptionsSepaDebitSchema = z.object({
   mandate_options: setupIntentPaymentMethodOptionsMandateOptionsSepaDebitSchema.optional(),
 });
 
+export const setupIntentPaymentMethodOptionsUsBankAccountSchema = z.object({
+  financial_connections: linkedAccountOptionsUsBankAccountSchema.optional(),
+  verification_method: z
+    .union([
+      z.literal("automatic"),
+      z.literal("instant"),
+      z.literal("microdeposits"),
+    ])
+    .optional(),
+});
+
+export const setupIntentTypeSpecificPaymentMethodOptionsClientSchema = z.object(
+  {
+    verification_method: z
+      .union([
+        z.literal("automatic"),
+        z.literal("instant"),
+        z.literal("microdeposits"),
+      ])
+      .optional(),
+  }
+);
+
 export const shippingSchema = z.object({
   address: addressSchema.optional(),
   carrier: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
+  name: z.string().optional(),
   phone: z.string().optional().nullable(),
   tracking_number: z.string().optional().nullable(),
 });
 
-export const shippingMethodSchema = z.object({
+export const shippingRateCurrencyOptionSchema = z.object({
+  amount: z.number(),
+  tax_behavior: z.union([
+    z.literal("exclusive"),
+    z.literal("inclusive"),
+    z.literal("unspecified"),
+  ]),
+});
+
+export const shippingRateDeliveryEstimateBoundSchema = z.object({
+  unit: z.union([
+    z.literal("business_day"),
+    z.literal("day"),
+    z.literal("hour"),
+    z.literal("month"),
+    z.literal("week"),
+  ]),
+  value: z.number(),
+});
+
+export const shippingRateFixedAmountSchema = z.object({
   amount: z.number(),
   currency: z.string(),
-  delivery_estimate: deliveryEstimateSchema.optional().nullable(),
-  description: z.string(),
-  id: z.string(),
+  currency_options: z.record(shippingRateCurrencyOptionSchema).optional(),
 });
 
 export const sigmaScheduledQueryRunErrorSchema = z.object({
   message: z.string(),
-});
-
-export const skuInventorySchema = z.object({
-  quantity: z.number().optional().nullable(),
-  type: z.string(),
-  value: z.string().optional().nullable(),
 });
 
 export const sourceCodeVerificationFlowSchema = z.object({
@@ -3135,13 +4840,6 @@ export const sourceTypeWechatSchema = z.object({
   statement_descriptor: z.string().optional(),
 });
 
-export const statusTransitionsSchema = z.object({
-  canceled: z.number().optional().nullable(),
-  fulfiled: z.number().optional().nullable(),
-  paid: z.number().optional().nullable(),
-  returned: z.number().optional().nullable(),
-});
-
 export const subscriptionAutomaticTaxSchema = z.object({
   enabled: z.boolean(),
 });
@@ -3151,8 +4849,34 @@ export const subscriptionBillingThresholdsSchema = z.object({
   reset_billing_cycle_anchor: z.boolean().optional().nullable(),
 });
 
+export const subscriptionDetailsDataSchema = z.object({
+  metadata: z.record(z.string()).optional().nullable(),
+});
+
 export const subscriptionItemBillingThresholdsSchema = z.object({
   usage_gte: z.number().optional().nullable(),
+});
+
+export const subscriptionPaymentMethodOptionsCardSchema = z.object({
+  mandate_options: invoiceMandateOptionsCardSchema.optional(),
+  network: z
+    .union([
+      z.literal("amex"),
+      z.literal("cartes_bancaires"),
+      z.literal("diners"),
+      z.literal("discover"),
+      z.literal("eftpos_au"),
+      z.literal("interac"),
+      z.literal("jcb"),
+      z.literal("mastercard"),
+      z.literal("unionpay"),
+      z.literal("unknown"),
+      z.literal("visa"),
+    ])
+    .optional(),
+  request_three_d_secure: z
+    .union([z.literal("any"), z.literal("automatic")])
+    .optional(),
 });
 
 export const subscriptionPendingInvoiceItemIntervalSchema = z.object({
@@ -3185,35 +4909,16 @@ export const subscriptionsResourcePauseCollectionSchema = z.object({
   resumes_at: z.number().optional().nullable(),
 });
 
-export const subscriptionsResourcePaymentMethodOptionsSchema = z.object({
-  bancontact: invoicePaymentMethodOptionsBancontactSchema.optional().nullable(),
-  card: invoicePaymentMethodOptionsCardSchema.optional().nullable(),
+export const subscriptionsTrialsResourceEndBehaviorSchema = z.object({
+  missing_payment_method: z.union([
+    z.literal("cancel"),
+    z.literal("create_invoice"),
+    z.literal("pause"),
+  ]),
 });
 
-export const subscriptionsResourcePaymentSettingsSchema = z.object({
-  payment_method_options: subscriptionsResourcePaymentMethodOptionsSchema
-    .optional()
-    .nullable(),
-  payment_method_types: z
-    .array(
-      z.union([
-        z.literal("ach_credit_transfer"),
-        z.literal("ach_debit"),
-        z.literal("au_becs_debit"),
-        z.literal("bacs_debit"),
-        z.literal("bancontact"),
-        z.literal("boleto"),
-        z.literal("card"),
-        z.literal("fpx"),
-        z.literal("giropay"),
-        z.literal("ideal"),
-        z.literal("sepa_debit"),
-        z.literal("sofort"),
-        z.literal("wechat_pay"),
-      ])
-    )
-    .optional()
-    .nullable(),
+export const subscriptionsTrialsResourceTrialSettingsSchema = z.object({
+  end_behavior: subscriptionsTrialsResourceEndBehaviorSchema,
 });
 
 export const taxCodeSchema = z.object({
@@ -3242,12 +4947,192 @@ export const taxIdVerificationSchema = z.object({
   verified_name: z.string().optional().nullable(),
 });
 
+export const taxProductResourceCustomerDetailsResourceTaxIdSchema = z.object({
+  type: z.union([
+    z.literal("ad_nrt"),
+    z.literal("ae_trn"),
+    z.literal("ar_cuit"),
+    z.literal("au_abn"),
+    z.literal("au_arn"),
+    z.literal("bg_uic"),
+    z.literal("bo_tin"),
+    z.literal("br_cnpj"),
+    z.literal("br_cpf"),
+    z.literal("ca_bn"),
+    z.literal("ca_gst_hst"),
+    z.literal("ca_pst_bc"),
+    z.literal("ca_pst_mb"),
+    z.literal("ca_pst_sk"),
+    z.literal("ca_qst"),
+    z.literal("ch_vat"),
+    z.literal("cl_tin"),
+    z.literal("cn_tin"),
+    z.literal("co_nit"),
+    z.literal("cr_tin"),
+    z.literal("do_rcn"),
+    z.literal("ec_ruc"),
+    z.literal("eg_tin"),
+    z.literal("es_cif"),
+    z.literal("eu_oss_vat"),
+    z.literal("eu_vat"),
+    z.literal("gb_vat"),
+    z.literal("ge_vat"),
+    z.literal("hk_br"),
+    z.literal("hu_tin"),
+    z.literal("id_npwp"),
+    z.literal("il_vat"),
+    z.literal("in_gst"),
+    z.literal("is_vat"),
+    z.literal("jp_cn"),
+    z.literal("jp_rn"),
+    z.literal("jp_trn"),
+    z.literal("ke_pin"),
+    z.literal("kr_brn"),
+    z.literal("li_uid"),
+    z.literal("mx_rfc"),
+    z.literal("my_frp"),
+    z.literal("my_itn"),
+    z.literal("my_sst"),
+    z.literal("no_vat"),
+    z.literal("nz_gst"),
+    z.literal("pe_ruc"),
+    z.literal("ph_tin"),
+    z.literal("ro_tin"),
+    z.literal("rs_pib"),
+    z.literal("ru_inn"),
+    z.literal("ru_kpp"),
+    z.literal("sa_vat"),
+    z.literal("sg_gst"),
+    z.literal("sg_uen"),
+    z.literal("si_tin"),
+    z.literal("sv_nit"),
+    z.literal("th_vat"),
+    z.literal("tr_tin"),
+    z.literal("tw_vat"),
+    z.literal("ua_vat"),
+    z.literal("unknown"),
+    z.literal("us_ein"),
+    z.literal("uy_ruc"),
+    z.literal("ve_rif"),
+    z.literal("vn_tin"),
+    z.literal("za_vat"),
+  ]),
+  value: z.string(),
+});
+
+export const taxProductResourceJurisdictionSchema = z.object({
+  country: z.string(),
+  display_name: z.string(),
+  level: z.union([
+    z.literal("city"),
+    z.literal("country"),
+    z.literal("county"),
+    z.literal("district"),
+    z.literal("state"),
+  ]),
+  state: z.string().optional().nullable(),
+});
+
+export const taxProductResourceLineItemTaxRateDetailsSchema = z.object({
+  display_name: z.string(),
+  percentage_decimal: z.string(),
+  tax_type: z.union([
+    z.literal("amusement_tax"),
+    z.literal("communications_tax"),
+    z.literal("gst"),
+    z.literal("hst"),
+    z.literal("igst"),
+    z.literal("jct"),
+    z.literal("lease_tax"),
+    z.literal("pst"),
+    z.literal("qst"),
+    z.literal("rst"),
+    z.literal("sales_tax"),
+    z.literal("vat"),
+  ]),
+});
+
+export const taxProductResourcePostalAddressSchema = z.object({
+  city: z.string().optional().nullable(),
+  country: z.string(),
+  line1: z.string().optional().nullable(),
+  line2: z.string().optional().nullable(),
+  postal_code: z.string().optional().nullable(),
+  state: z.string().optional().nullable(),
+});
+
+export const taxProductResourceTaxRateDetailsSchema = z.object({
+  country: z.string().optional().nullable(),
+  percentage_decimal: z.string(),
+  state: z.string().optional().nullable(),
+  tax_type: z
+    .union([
+      z.literal("amusement_tax"),
+      z.literal("communications_tax"),
+      z.literal("gst"),
+      z.literal("hst"),
+      z.literal("igst"),
+      z.literal("jct"),
+      z.literal("lease_tax"),
+      z.literal("pst"),
+      z.literal("qst"),
+      z.literal("rst"),
+      z.literal("sales_tax"),
+      z.literal("vat"),
+    ])
+    .optional(),
+});
+
+export const taxProductResourceTaxSettingsDefaultsSchema = z.object({
+  tax_behavior: z
+    .union([
+      z.literal("exclusive"),
+      z.literal("inclusive"),
+      z.literal("inferred_by_currency"),
+    ])
+    .optional(),
+  tax_code: z.string().optional().nullable(),
+});
+
+export const taxProductResourceTaxSettingsHeadOfficeSchema = z.object({
+  address: addressSchema,
+});
+
+export const taxProductResourceTaxSettingsStatusDetailsResourceActiveSchema = z.object(
+  {}
+);
+
+export const taxProductResourceTaxSettingsStatusDetailsResourcePendingSchema = z.object(
+  {
+    missing_fields: z.array(z.string()).optional().nullable(),
+  }
+);
+
+export const taxProductResourceTaxTransactionLineItemResourceReversalSchema = z.object(
+  {
+    original_line_item: z.string(),
+  }
+);
+
+export const taxProductResourceTaxTransactionResourceReversalSchema = z.object({
+  original_transaction: z.string().optional().nullable(),
+});
+
+export const taxProductResourceTaxTransactionShippingCostSchema = z.object({
+  amount: z.number(),
+  amount_tax: z.number(),
+  shipping_rate: z.string().optional(),
+  tax_behavior: z.union([z.literal("exclusive"), z.literal("inclusive")]),
+  tax_code: z.string(),
+});
+
 export const taxRateSchema = z.object({
   active: z.boolean(),
   country: z.string().optional().nullable(),
   created: z.number(),
   description: z.string().optional().nullable(),
   display_name: z.string(),
+  effective_percentage: z.number().optional().nullable(),
   id: z.string(),
   inclusive: z.boolean(),
   jurisdiction: z.string().optional().nullable(),
@@ -3258,11 +5143,18 @@ export const taxRateSchema = z.object({
   state: z.string().optional().nullable(),
   tax_type: z
     .union([
+      z.literal("amusement_tax"),
+      z.literal("communications_tax"),
       z.literal("gst"),
       z.literal("hst"),
+      z.literal("igst"),
+      z.literal("jct"),
+      z.literal("lease_tax"),
       z.literal("pst"),
       z.literal("qst"),
+      z.literal("rst"),
       z.literal("sales_tax"),
+      z.literal("service_tax"),
       z.literal("vat"),
     ])
     .optional(),
@@ -3276,6 +5168,7 @@ export const terminalConnectionTokenSchema = z.object({
 
 export const terminalLocationSchema = z.object({
   address: addressSchema,
+  configuration_overrides: z.string().optional(),
   display_name: z.string(),
   id: z.string(),
   livemode: z.boolean(),
@@ -3283,21 +5176,60 @@ export const terminalLocationSchema = z.object({
   object: z.literal("terminal.location"),
 });
 
-export const terminalReaderSchema = z.object({
-  device_sw_version: z.string().optional().nullable(),
-  device_type: z.union([
-    z.literal("bbpos_chipper2x"),
-    z.literal("verifone_P400"),
-  ]),
+export const terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema = z.object(
+  {
+    fixed_amounts: z.array(z.number()).optional().nullable(),
+    percentages: z.array(z.number()).optional().nullable(),
+    smart_tip_threshold: z.number().optional(),
+  }
+);
+
+export const terminalConfigurationConfigurationResourceTippingSchema = z.object(
+  {
+    aud: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    cad: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    chf: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    czk: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    dkk: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    eur: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    gbp: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    hkd: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    myr: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    nok: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    nzd: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    sek: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    sgd: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+    usd: terminalConfigurationConfigurationResourceCurrencySpecificConfigSchema.optional(),
+  }
+);
+
+export const terminalReaderReaderResourceLineItemSchema = z.object({
+  amount: z.number(),
+  description: z.string(),
+  quantity: z.number(),
+});
+
+export const terminalReaderReaderResourceProcessSetupConfigSchema = z.object(
+  {}
+);
+
+export const terminalReaderReaderResourceTippingConfigSchema = z.object({
+  amount_eligible: z.number().optional(),
+});
+
+export const testHelpersTestClockSchema = z.object({
+  created: z.number(),
+  deletes_after: z.number(),
+  frozen_time: z.number(),
   id: z.string(),
-  ip_address: z.string().optional().nullable(),
-  label: z.string(),
   livemode: z.boolean(),
-  location: z.union([z.string(), terminalLocationSchema]).optional().nullable(),
-  metadata: z.record(z.string()),
-  object: z.literal("terminal.reader"),
-  serial_number: z.string(),
-  status: z.string().optional().nullable(),
+  name: z.string().optional().nullable(),
+  object: z.literal("test_helpers.test_clock"),
+  status: z.union([
+    z.literal("advancing"),
+    z.literal("internal_failure"),
+    z.literal("ready"),
+  ]),
 });
 
 export const threeDSecureDetailsSchema = z.object({
@@ -3308,6 +5240,37 @@ export const threeDSecureDetailsSchema = z.object({
     .union([
       z.literal("attempt_acknowledged"),
       z.literal("authenticated"),
+      z.literal("exempted"),
+      z.literal("failed"),
+      z.literal("not_supported"),
+      z.literal("processing_error"),
+    ])
+    .optional(),
+  result_reason: z
+    .union([
+      z.literal("abandoned"),
+      z.literal("bypassed"),
+      z.literal("canceled"),
+      z.literal("card_not_enrolled"),
+      z.literal("network_not_supported"),
+      z.literal("protocol_error"),
+      z.literal("rejected"),
+    ])
+    .optional(),
+  version: z
+    .union([z.literal("1.0.2"), z.literal("2.1.0"), z.literal("2.2.0")])
+    .optional(),
+});
+
+export const threeDSecureDetailsChargeSchema = z.object({
+  authentication_flow: z
+    .union([z.literal("challenge"), z.literal("frictionless")])
+    .optional(),
+  result: z
+    .union([
+      z.literal("attempt_acknowledged"),
+      z.literal("authenticated"),
+      z.literal("exempted"),
       z.literal("failed"),
       z.literal("not_supported"),
       z.literal("processing_error"),
@@ -3350,6 +5313,223 @@ export const transformUsageSchema = z.object({
   round: z.union([z.literal("down"), z.literal("up")]),
 });
 
+export const treasuryFinancialAccountsResourceAbaRecordSchema = z.object({
+  account_holder_name: z.string(),
+  account_number: z.string().optional().nullable(),
+  account_number_last4: z.string(),
+  bank_name: z.string(),
+  routing_number: z.string(),
+});
+
+export const treasuryFinancialAccountsResourceBalanceSchema = z.object({
+  cash: z.record(z.number()),
+  inbound_pending: z.record(z.number()),
+  outbound_pending: z.record(z.number()),
+});
+
+export const treasuryFinancialAccountsResourceClosedStatusDetailsSchema = z.object(
+  {
+    reasons: z.array(
+      z.union([
+        z.literal("account_rejected"),
+        z.literal("closed_by_platform"),
+        z.literal("other"),
+      ])
+    ),
+  }
+);
+
+export const treasuryFinancialAccountsResourceFinancialAddressSchema = z.object(
+  {
+    aba: treasuryFinancialAccountsResourceAbaRecordSchema.optional(),
+    supported_networks: z
+      .array(z.union([z.literal("ach"), z.literal("us_domestic_wire")]))
+      .optional(),
+    type: z.literal("aba"),
+  }
+);
+
+export const treasuryFinancialAccountsResourcePlatformRestrictionsSchema = z.object(
+  {
+    inbound_flows: z
+      .union([z.literal("restricted"), z.literal("unrestricted")])
+      .optional(),
+    outbound_flows: z
+      .union([z.literal("restricted"), z.literal("unrestricted")])
+      .optional(),
+  }
+);
+
+export const treasuryFinancialAccountsResourceStatusDetailsSchema = z.object({
+  closed: treasuryFinancialAccountsResourceClosedStatusDetailsSchema
+    .optional()
+    .nullable(),
+});
+
+export const treasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema = z.object(
+  {
+    code: z.union([
+      z.literal("activating"),
+      z.literal("capability_not_requested"),
+      z.literal("financial_account_closed"),
+      z.literal("rejected_other"),
+      z.literal("rejected_unsupported_business"),
+      z.literal("requirements_past_due"),
+      z.literal("requirements_pending_verification"),
+      z.literal("restricted_by_platform"),
+      z.literal("restricted_other"),
+    ]),
+    resolution: z
+      .union([
+        z.literal("contact_stripe"),
+        z.literal("provide_information"),
+        z.literal("remove_restriction"),
+      ])
+      .optional(),
+    restriction: z
+      .union([z.literal("inbound_flows"), z.literal("outbound_flows")])
+      .optional(),
+  }
+);
+
+export const treasuryInboundTransfersResourceFailureDetailsSchema = z.object({
+  code: z.union([
+    z.literal("account_closed"),
+    z.literal("account_frozen"),
+    z.literal("bank_account_restricted"),
+    z.literal("bank_ownership_changed"),
+    z.literal("debit_not_authorized"),
+    z.literal("incorrect_account_holder_address"),
+    z.literal("incorrect_account_holder_name"),
+    z.literal("incorrect_account_holder_tax_id"),
+    z.literal("insufficient_funds"),
+    z.literal("invalid_account_number"),
+    z.literal("invalid_currency"),
+    z.literal("no_account"),
+    z.literal("other"),
+  ]),
+});
+
+export const treasuryInboundTransfersResourceInboundTransferResourceLinkedFlowsSchema = z.object(
+  {
+    received_debit: z.string().optional().nullable(),
+  }
+);
+
+export const treasuryInboundTransfersResourceInboundTransferResourceStatusTransitionsSchema = z.object(
+  {
+    canceled_at: z.number().optional().nullable(),
+    failed_at: z.number().optional().nullable(),
+    succeeded_at: z.number().optional().nullable(),
+  }
+);
+
+export const treasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetailsSchema = z.object(
+  {
+    ip_address: z.string().optional().nullable(),
+    present: z.boolean(),
+  }
+);
+
+export const treasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitionsSchema = z.object(
+  {
+    canceled_at: z.number().optional().nullable(),
+    failed_at: z.number().optional().nullable(),
+    posted_at: z.number().optional().nullable(),
+    returned_at: z.number().optional().nullable(),
+  }
+);
+
+export const treasuryOutboundTransfersResourceStatusTransitionsSchema = z.object(
+  {
+    canceled_at: z.number().optional().nullable(),
+    failed_at: z.number().optional().nullable(),
+    posted_at: z.number().optional().nullable(),
+    returned_at: z.number().optional().nullable(),
+  }
+);
+
+export const treasuryReceivedCreditsResourceReversalDetailsSchema = z.object({
+  deadline: z.number().optional().nullable(),
+  restricted_reason: z
+    .union([
+      z.literal("already_reversed"),
+      z.literal("deadline_passed"),
+      z.literal("network_restricted"),
+      z.literal("other"),
+      z.literal("source_flow_restricted"),
+    ])
+    .optional(),
+});
+
+export const treasuryReceivedCreditsResourceStatusTransitionsSchema = z.object({
+  posted_at: z.number().optional().nullable(),
+});
+
+export const treasuryReceivedDebitsResourceDebitReversalLinkedFlowsSchema = z.object(
+  {
+    issuing_dispute: z.string().optional().nullable(),
+  }
+);
+
+export const treasuryReceivedDebitsResourceLinkedFlowsSchema = z.object({
+  debit_reversal: z.string().optional().nullable(),
+  inbound_transfer: z.string().optional().nullable(),
+  issuing_authorization: z.string().optional().nullable(),
+  issuing_transaction: z.string().optional().nullable(),
+});
+
+export const treasuryReceivedDebitsResourceReversalDetailsSchema = z.object({
+  deadline: z.number().optional().nullable(),
+  restricted_reason: z
+    .union([
+      z.literal("already_reversed"),
+      z.literal("deadline_passed"),
+      z.literal("network_restricted"),
+      z.literal("other"),
+      z.literal("source_flow_restricted"),
+    ])
+    .optional(),
+});
+
+export const treasuryReceivedDebitsResourceStatusTransitionsSchema = z.object({
+  completed_at: z.number().optional().nullable(),
+});
+
+export const treasurySharedResourceBillingDetailsSchema = z.object({
+  address: addressSchema,
+  email: z.string().optional().nullable(),
+  name: z.string().optional().nullable(),
+});
+
+export const treasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccountSchema = z.object(
+  {
+    bank_name: z.string().optional().nullable(),
+    last4: z.string().optional().nullable(),
+    routing_number: z.string().optional().nullable(),
+  }
+);
+
+export const treasuryTransactionsResourceAbstractTransactionResourceStatusTransitionsSchema = z.object(
+  {
+    posted_at: z.number().optional().nullable(),
+    void_at: z.number().optional().nullable(),
+  }
+);
+
+export const treasuryTransactionsResourceBalanceImpactSchema = z.object({
+  cash: z.number(),
+  inbound_pending: z.number(),
+  outbound_pending: z.number(),
+});
+
+export const usBankAccountNetworksSchema = z.object({
+  preferred: z.string().optional().nullable(),
+  supported: z.array(
+    z.union([z.literal("ach"), z.literal("us_domestic_wire")])
+  ),
+});
+
 export const usageRecordSchema = z.object({
   id: z.string(),
   livemode: z.boolean(),
@@ -3390,6 +5570,7 @@ export const webhookEndpointSchema = z.object({
 
 export const accountBusinessProfileSchema = z.object({
   mcc: z.string().optional().nullable(),
+  monthly_estimated_revenue: accountMonthlyEstimatedRevenueSchema.optional(),
   name: z.string().optional().nullable(),
   product_description: z.string().optional().nullable(),
   support_address: addressSchema.optional().nullable(),
@@ -3399,7 +5580,25 @@ export const accountBusinessProfileSchema = z.object({
   url: z.string().optional().nullable(),
 });
 
+export const accountCapabilityFutureRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
+  current_deadline: z.number().optional().nullable(),
+  currently_due: z.array(z.string()),
+  disabled_reason: z.string().optional().nullable(),
+  errors: z.array(accountRequirementsErrorSchema),
+  eventually_due: z.array(z.string()),
+  past_due: z.array(z.string()),
+  pending_verification: z.array(z.string()),
+});
+
 export const accountCapabilityRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
   current_deadline: z.number().optional().nullable(),
   currently_due: z.array(z.string()),
   disabled_reason: z.string().optional().nullable(),
@@ -3416,6 +5615,22 @@ export const accountCardIssuingSettingsSchema = z.object({
 export const accountCardPaymentsSettingsSchema = z.object({
   decline_on: accountDeclineChargeOnSchema.optional(),
   statement_descriptor_prefix: z.string().optional().nullable(),
+  statement_descriptor_prefix_kana: z.string().optional().nullable(),
+  statement_descriptor_prefix_kanji: z.string().optional().nullable(),
+});
+
+export const accountFutureRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
+  current_deadline: z.number().optional().nullable(),
+  currently_due: z.array(z.string()).optional().nullable(),
+  disabled_reason: z.string().optional().nullable(),
+  errors: z.array(accountRequirementsErrorSchema).optional().nullable(),
+  eventually_due: z.array(z.string()).optional().nullable(),
+  past_due: z.array(z.string()).optional().nullable(),
+  pending_verification: z.array(z.string()).optional().nullable(),
 });
 
 export const accountPayoutSettingsSchema = z.object({
@@ -3425,6 +5640,10 @@ export const accountPayoutSettingsSchema = z.object({
 });
 
 export const accountRequirementsSchema = z.object({
+  alternatives: z
+    .array(accountRequirementsAlternativeSchema)
+    .optional()
+    .nullable(),
   current_deadline: z.number().optional().nullable(),
   currently_due: z.array(z.string()).optional().nullable(),
   disabled_reason: z.string().optional().nullable(),
@@ -3432,6 +5651,18 @@ export const accountRequirementsSchema = z.object({
   eventually_due: z.array(z.string()).optional().nullable(),
   past_due: z.array(z.string()).optional().nullable(),
   pending_verification: z.array(z.string()).optional().nullable(),
+});
+
+export const appsSecretSchema = z.object({
+  created: z.number(),
+  deleted: z.boolean().optional(),
+  expires_at: z.number().optional().nullable(),
+  id: z.string(),
+  livemode: z.boolean(),
+  name: z.string(),
+  object: z.literal("apps.secret"),
+  payload: z.string().optional().nullable(),
+  scope: secretServiceResourceScopeSchema,
 });
 
 export const balanceAmountSchema = z.object({
@@ -3444,36 +5675,20 @@ export const balanceDetailSchema = z.object({
   available: z.array(balanceAmountSchema),
 });
 
-export const bitcoinReceiverSchema = z.object({
-  active: z.boolean(),
-  amount: z.number(),
-  amount_received: z.number(),
-  bitcoin_amount: z.number(),
-  bitcoin_amount_received: z.number(),
-  bitcoin_uri: z.string(),
-  created: z.number(),
-  currency: z.string(),
-  customer: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  email: z.string().optional().nullable(),
-  filled: z.boolean(),
-  id: z.string(),
-  inbound_address: z.string(),
+export const bankConnectionsResourceBalanceSchema = z.object({
+  as_of: z.number(),
+  cash: bankConnectionsResourceBalanceApiResourceCashBalanceSchema.optional(),
+  credit: bankConnectionsResourceBalanceApiResourceCreditBalanceSchema.optional(),
+  current: z.record(z.number()),
+  type: z.union([z.literal("cash"), z.literal("credit")]),
+});
+
+export const cashBalanceSchema = z.object({
+  available: z.record(z.number()).optional().nullable(),
+  customer: z.string(),
   livemode: z.boolean(),
-  metadata: z.record(z.string()).optional().nullable(),
-  object: z.literal("bitcoin_receiver"),
-  payment: z.string().optional().nullable(),
-  refund_address: z.string().optional().nullable(),
-  transactions: z
-    .object({
-      data: z.array(bitcoinTransactionSchema),
-      has_more: z.boolean(),
-      object: z.literal("list"),
-      url: z.string(),
-    })
-    .optional(),
-  uncaptured_funds: z.boolean(),
-  used_for_payment: z.boolean().optional().nullable(),
+  object: z.literal("cash_balance"),
+  settings: customerBalanceCustomerBalanceSettingsSchema,
 });
 
 export const chargeOutcomeSchema = z.object({
@@ -3486,10 +5701,56 @@ export const chargeOutcomeSchema = z.object({
   type: z.string(),
 });
 
-export const checkoutSessionPaymentMethodOptionsSchema = z.object({
-  acss_debit: checkoutAcssDebitPaymentMethodOptionsSchema.optional(),
-  boleto: paymentMethodOptionsBoletoSchema.optional(),
-  oxxo: paymentMethodOptionsOxxoSchema.optional(),
+export const checkoutCustomerBalanceBankTransferPaymentMethodOptionsSchema = z.object(
+  {
+    eu_bank_transfer: paymentMethodOptionsCustomerBalanceEuBankAccountSchema.optional(),
+    requested_address_types: z
+      .array(
+        z.union([
+          z.literal("aba"),
+          z.literal("iban"),
+          z.literal("sepa"),
+          z.literal("sort_code"),
+          z.literal("spei"),
+          z.literal("swift"),
+          z.literal("zengin"),
+        ])
+      )
+      .optional(),
+    type: z
+      .union([
+        z.literal("eu_bank_transfer"),
+        z.literal("gb_bank_transfer"),
+        z.literal("jp_bank_transfer"),
+        z.literal("mx_bank_transfer"),
+        z.literal("us_bank_transfer"),
+      ])
+      .optional(),
+  }
+);
+
+export const checkoutCustomerBalancePaymentMethodOptionsSchema = z.object({
+  bank_transfer: checkoutCustomerBalanceBankTransferPaymentMethodOptionsSchema.optional(),
+  funding_type: z.literal("bank_transfer").optional(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const checkoutUsBankAccountPaymentMethodOptionsSchema = z.object({
+  financial_connections: linkedAccountOptionsUsBankAccountSchema.optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+  verification_method: z
+    .union([z.literal("automatic"), z.literal("instant")])
+    .optional(),
+});
+
+export const connectEmbeddedAccountSessionCreateComponentsSchema = z.object({
+  account_onboarding: connectEmbeddedBaseConfigClaimSchema,
 });
 
 export const countrySpecSchema = z.object({
@@ -3508,6 +5769,7 @@ export const couponSchema = z.object({
   applies_to: couponAppliesToSchema.optional(),
   created: z.number(),
   currency: z.string().optional().nullable(),
+  currency_options: z.record(couponCurrencyOptionSchema).optional(),
   duration: z.union([
     z.literal("forever"),
     z.literal("once"),
@@ -3530,6 +5792,40 @@ export const creditNoteTaxAmountSchema = z.object({
   amount: z.number(),
   inclusive: z.boolean(),
   tax_rate: z.union([z.string(), taxRateSchema]),
+  taxability_reason: z
+    .union([
+      z.literal("customer_exempt"),
+      z.literal("not_collecting"),
+      z.literal("not_subject_to_tax"),
+      z.literal("not_supported"),
+      z.literal("portion_product_exempt"),
+      z.literal("portion_reduced_rated"),
+      z.literal("portion_standard_rated"),
+      z.literal("product_exempt"),
+      z.literal("product_exempt_holiday"),
+      z.literal("proportionally_rated"),
+      z.literal("reduced_rated"),
+      z.literal("reverse_charge"),
+      z.literal("standard_rated"),
+      z.literal("taxable_basis_reduced"),
+      z.literal("zero_rated"),
+    ])
+    .optional(),
+  taxable_amount: z.number().optional().nullable(),
+});
+
+export const currencyOptionSchema = z.object({
+  custom_unit_amount: customUnitAmountSchema.optional().nullable(),
+  tax_behavior: z
+    .union([
+      z.literal("exclusive"),
+      z.literal("inclusive"),
+      z.literal("unspecified"),
+    ])
+    .optional(),
+  tiers: z.array(priceTierSchema).optional(),
+  unit_amount: z.number().optional().nullable(),
+  unit_amount_decimal: z.string().optional().nullable(),
 });
 
 export const customerAcceptanceSchema = z.object({
@@ -3538,6 +5834,23 @@ export const customerAcceptanceSchema = z.object({
   online: onlineAcceptanceSchema.optional(),
   type: z.union([z.literal("offline"), z.literal("online")]),
 });
+
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferSchema = z.object(
+  {
+    eu_bank_transfer: customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransferSchema.optional(),
+    gb_bank_transfer: customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransferSchema.optional(),
+    jp_bank_transfer: customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransferSchema.optional(),
+    reference: z.string().optional().nullable(),
+    type: z.union([
+      z.literal("eu_bank_transfer"),
+      z.literal("gb_bank_transfer"),
+      z.literal("jp_bank_transfer"),
+      z.literal("mx_bank_transfer"),
+      z.literal("us_bank_transfer"),
+    ]),
+    us_bank_transfer: customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferSchema.optional(),
+  }
+);
 
 export const customerTaxSchema = z.object({
   automatic_tax: z.union([
@@ -3548,6 +5861,11 @@ export const customerTaxSchema = z.object({
   ]),
   ip_address: z.string().optional().nullable(),
   location: customerTaxLocationSchema.optional().nullable(),
+});
+
+export const disputePaymentMethodDetailsSchema = z.object({
+  card: disputePaymentMethodDetailsCardSchema.optional().nullable(),
+  type: z.literal("card"),
 });
 
 export const eventSchema = z.object({
@@ -3561,6 +5879,30 @@ export const eventSchema = z.object({
   pending_webhooks: z.number(),
   request: notificationEventRequestSchema.optional().nullable(),
   type: z.string(),
+});
+
+export const fundingInstructionsBankTransferFinancialAddressSchema = z.object({
+  iban: fundingInstructionsBankTransferIbanRecordSchema.optional(),
+  sort_code: fundingInstructionsBankTransferSortCodeRecordSchema.optional(),
+  spei: fundingInstructionsBankTransferSpeiRecordSchema.optional(),
+  supported_networks: z
+    .array(
+      z.union([
+        z.literal("bacs"),
+        z.literal("fps"),
+        z.literal("sepa"),
+        z.literal("spei"),
+        z.literal("zengin"),
+      ])
+    )
+    .optional(),
+  type: z.union([
+    z.literal("iban"),
+    z.literal("sort_code"),
+    z.literal("spei"),
+    z.literal("zengin"),
+  ]),
+  zengin: fundingInstructionsBankTransferZenginRecordSchema.optional(),
 });
 
 export const gelatoDocumentReportSchema = z.object({
@@ -3612,9 +5954,9 @@ export const identityVerificationReportSchema = z.object({
   id_number: gelatoIdNumberReportSchema.optional(),
   livemode: z.boolean(),
   object: z.literal("identity.verification_report"),
-  options: gelatoVerificationReportOptionsSchema,
+  options: gelatoVerificationReportOptionsSchema.optional(),
   selfie: gelatoSelfieReportSchema.optional(),
-  type: z.union([z.literal("document"), z.literal("id_number")]),
+  type: z.union([z.literal("document"), z.literal("id_number")]).optional(),
   verification_session: z.string().optional().nullable(),
 });
 
@@ -3630,7 +5972,7 @@ export const identityVerificationSessionSchema = z.object({
   livemode: z.boolean(),
   metadata: z.record(z.string()),
   object: z.literal("identity.verification_session"),
-  options: gelatoVerificationSessionOptionsSchema,
+  options: gelatoVerificationSessionOptionsSchema.optional().nullable(),
   redaction: verificationSessionRedactionSchema.optional().nullable(),
   status: z.union([
     z.literal("canceled"),
@@ -3638,15 +5980,70 @@ export const identityVerificationSessionSchema = z.object({
     z.literal("requires_input"),
     z.literal("verified"),
   ]),
-  type: z.union([z.literal("document"), z.literal("id_number")]),
+  type: z.union([z.literal("document"), z.literal("id_number")]).optional(),
   url: z.string().optional().nullable(),
   verified_outputs: gelatoVerifiedOutputsSchema.optional().nullable(),
+});
+
+export const inboundTransfersSchema = z.object({
+  billing_details: treasurySharedResourceBillingDetailsSchema,
+  type: z.literal("us_bank_account"),
+  us_bank_account: inboundTransfersPaymentMethodDetailsUsBankAccountSchema.optional(),
+});
+
+export const invoicePaymentMethodOptionsAcssDebitSchema = z.object({
+  mandate_options: invoicePaymentMethodOptionsAcssDebitMandateOptionsSchema.optional(),
+  verification_method: z
+    .union([
+      z.literal("automatic"),
+      z.literal("instant"),
+      z.literal("microdeposits"),
+    ])
+    .optional(),
+});
+
+export const invoicePaymentMethodOptionsCustomerBalanceBankTransferSchema = z.object(
+  {
+    eu_bank_transfer: invoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferSchema.optional(),
+    type: z.string().optional().nullable(),
+  }
+);
+
+export const invoicePaymentMethodOptionsUsBankAccountSchema = z.object({
+  financial_connections: invoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsSchema.optional(),
+  verification_method: z
+    .union([
+      z.literal("automatic"),
+      z.literal("instant"),
+      z.literal("microdeposits"),
+    ])
+    .optional(),
 });
 
 export const invoiceTaxAmountSchema = z.object({
   amount: z.number(),
   inclusive: z.boolean(),
   tax_rate: z.union([z.string(), taxRateSchema]),
+  taxability_reason: z
+    .union([
+      z.literal("customer_exempt"),
+      z.literal("not_collecting"),
+      z.literal("not_subject_to_tax"),
+      z.literal("not_supported"),
+      z.literal("portion_product_exempt"),
+      z.literal("portion_reduced_rated"),
+      z.literal("portion_standard_rated"),
+      z.literal("product_exempt"),
+      z.literal("product_exempt_holiday"),
+      z.literal("proportionally_rated"),
+      z.literal("reduced_rated"),
+      z.literal("reverse_charge"),
+      z.literal("standard_rated"),
+      z.literal("taxable_basis_reduced"),
+      z.literal("zero_rated"),
+    ])
+    .optional(),
+  taxable_amount: z.number().optional().nullable(),
 });
 
 export const issuingCardAuthorizationControlsSchema = z.object({
@@ -3763,11 +6160,13 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -3792,6 +6191,12 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -3818,6 +6223,7 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -4062,11 +6468,13 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -4091,6 +6499,12 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -4117,6 +6531,7 @@ export const issuingCardAuthorizationControlsSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -4255,6 +6670,41 @@ export const issuingCardAuthorizationControlsSchema = z.object({
   spending_limits_currency: z.string().optional().nullable(),
 });
 
+export const issuingCardShippingSchema = z.object({
+  address: addressSchema,
+  carrier: z
+    .union([
+      z.literal("dhl"),
+      z.literal("fedex"),
+      z.literal("royal_mail"),
+      z.literal("usps"),
+    ])
+    .optional(),
+  customs: issuingCardShippingCustomsSchema.optional().nullable(),
+  eta: z.number().optional().nullable(),
+  name: z.string(),
+  phone_number: z.string().optional().nullable(),
+  require_signature: z.boolean().optional().nullable(),
+  service: z.union([
+    z.literal("express"),
+    z.literal("priority"),
+    z.literal("standard"),
+  ]),
+  status: z
+    .union([
+      z.literal("canceled"),
+      z.literal("delivered"),
+      z.literal("failure"),
+      z.literal("pending"),
+      z.literal("returned"),
+      z.literal("shipped"),
+    ])
+    .optional(),
+  tracking_number: z.string().optional().nullable(),
+  tracking_url: z.string().optional().nullable(),
+  type: z.union([z.literal("bulk"), z.literal("individual")]),
+});
+
 export const issuingCardholderAuthorizationControlsSchema = z.object({
   allowed_categories: z
     .array(
@@ -4369,11 +6819,13 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -4398,6 +6850,12 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -4424,6 +6882,7 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -4668,11 +7127,13 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("eating_places_restaurants"),
         z.literal("educational_services"),
         z.literal("electric_razor_stores"),
+        z.literal("electric_vehicle_charging"),
         z.literal("electrical_parts_and_equipment"),
         z.literal("electrical_services"),
         z.literal("electronics_repair_shops"),
         z.literal("electronics_stores"),
         z.literal("elementary_secondary_schools"),
+        z.literal("emergency_services_gcas_visa_use_only"),
         z.literal("employment_temp_agencies"),
         z.literal("equipment_rental"),
         z.literal("exterminating_services"),
@@ -4697,6 +7158,12 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("glass_paint_and_wallpaper_stores"),
         z.literal("glassware_crystal_stores"),
         z.literal("golf_courses_public"),
+        z.literal("government_licensed_horse_dog_racing_us_region_only"),
+        z.literal(
+          "government_licensed_online_casions_online_gambling_us_region_only"
+        ),
+        z.literal("government_owned_lotteries_non_us_region"),
+        z.literal("government_owned_lotteries_us_region_only"),
         z.literal("government_services"),
         z.literal("grocery_stores_supermarkets"),
         z.literal("hardware_equipment_and_supplies"),
@@ -4723,6 +7190,7 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
         z.literal("lumber_building_materials_stores"),
         z.literal("manual_cash_disburse"),
         z.literal("marinas_service_and_supplies"),
+        z.literal("marketplaces"),
         z.literal("masonry_stonework_and_plaster"),
         z.literal("massage_parlors"),
         z.literal("medical_and_dental_labs"),
@@ -4861,6 +7329,12 @@ export const issuingCardholderAuthorizationControlsSchema = z.object({
   spending_limits_currency: z.string().optional().nullable(),
 });
 
+export const issuingCardholderCardIssuingSchema = z.object({
+  user_terms_acceptance: issuingCardholderUserTermsAcceptanceSchema
+    .optional()
+    .nullable(),
+});
+
 export const issuingTransactionFlightDataSchema = z.object({
   departure_at: z.number().optional().nullable(),
   passenger_name: z.string().optional().nullable(),
@@ -4883,6 +7357,26 @@ export const issuingTransactionPurchaseDetailsSchema = z.object({
 export const lineItemsTaxAmountSchema = z.object({
   amount: z.number(),
   rate: taxRateSchema,
+  taxability_reason: z
+    .union([
+      z.literal("customer_exempt"),
+      z.literal("not_collecting"),
+      z.literal("not_subject_to_tax"),
+      z.literal("not_supported"),
+      z.literal("portion_product_exempt"),
+      z.literal("portion_reduced_rated"),
+      z.literal("portion_standard_rated"),
+      z.literal("product_exempt"),
+      z.literal("product_exempt_holiday"),
+      z.literal("proportionally_rated"),
+      z.literal("reduced_rated"),
+      z.literal("reverse_charge"),
+      z.literal("standard_rated"),
+      z.literal("taxable_basis_reduced"),
+      z.literal("zero_rated"),
+    ])
+    .optional(),
+  taxable_amount: z.number().optional().nullable(),
 });
 
 export const mandatePaymentMethodDetailsSchema = z.object({
@@ -4890,25 +7384,82 @@ export const mandatePaymentMethodDetailsSchema = z.object({
   au_becs_debit: mandateAuBecsDebitSchema.optional(),
   bacs_debit: mandateBacsDebitSchema.optional(),
   card: cardMandatePaymentMethodDetailsSchema.optional(),
+  cashapp: mandateCashappSchema.optional(),
+  link: mandateLinkSchema.optional(),
+  paypal: mandatePaypalSchema.optional(),
   sepa_debit: mandateSepaDebitSchema.optional(),
   type: z.string(),
+  us_bank_account: mandateUsBankAccountSchema.optional(),
 });
 
-export const paymentIntentNextActionSchema = z.object({
-  alipay_handle_redirect: paymentIntentNextActionAlipayHandleRedirectSchema.optional(),
-  boleto_display_details: paymentIntentNextActionBoletoSchema.optional(),
-  oxxo_display_details: paymentIntentNextActionDisplayOxxoDetailsSchema.optional(),
-  redirect_to_url: paymentIntentNextActionRedirectToUrlSchema.optional(),
-  type: z.string(),
-  use_stripe_sdk: z.record(z.any()).optional(),
-  verify_with_microdeposits: paymentIntentNextActionVerifyWithMicrodepositsSchema.optional(),
-  wechat_pay_display_qr_code: paymentIntentNextActionWechatPayDisplayQrCodeSchema.optional(),
-  wechat_pay_redirect_to_android_app: paymentIntentNextActionWechatPayRedirectToAndroidAppSchema.optional(),
-  wechat_pay_redirect_to_ios_app: paymentIntentNextActionWechatPayRedirectToIosAppSchema.optional(),
+export const outboundPaymentsPaymentMethodDetailsSchema = z.object({
+  billing_details: treasurySharedResourceBillingDetailsSchema,
+  financial_account: outboundPaymentsPaymentMethodDetailsFinancialAccountSchema.optional(),
+  type: z.union([z.literal("financial_account"), z.literal("us_bank_account")]),
+  us_bank_account: outboundPaymentsPaymentMethodDetailsUsBankAccountSchema.optional(),
+});
+
+export const outboundTransfersPaymentMethodDetailsSchema = z.object({
+  billing_details: treasurySharedResourceBillingDetailsSchema,
+  type: z.literal("us_bank_account"),
+  us_bank_account: outboundTransfersPaymentMethodDetailsUsBankAccountSchema.optional(),
+});
+
+export const paymentFlowsAmountDetailsSchema = z.object({
+  tip: paymentFlowsAmountDetailsResourceTipSchema.optional(),
+});
+
+export const paymentFlowsInstallmentOptionsSchema = z.object({
+  enabled: z.boolean(),
+  plan: paymentMethodDetailsCardInstallmentsPlanSchema.optional(),
+});
+
+export const paymentIntentCardProcessingSchema = z.object({
+  customer_notification: paymentIntentProcessingCustomerNotificationSchema.optional(),
+});
+
+export const paymentIntentNextActionCashappHandleRedirectOrDisplayQrCodeSchema = z.object(
+  {
+    hosted_instructions_url: z.string(),
+    mobile_auth_url: z.string(),
+    qr_code: paymentIntentNextActionCashappQrCodeSchema,
+  }
+);
+
+export const paymentIntentNextActionDisplayBankTransferInstructionsSchema = z.object(
+  {
+    amount_remaining: z.number().optional().nullable(),
+    currency: z.string().optional().nullable(),
+    financial_addresses: z
+      .array(fundingInstructionsBankTransferFinancialAddressSchema)
+      .optional(),
+    hosted_instructions_url: z.string().optional().nullable(),
+    reference: z.string().optional().nullable(),
+    type: z.union([
+      z.literal("eu_bank_transfer"),
+      z.literal("gb_bank_transfer"),
+      z.literal("jp_bank_transfer"),
+      z.literal("mx_bank_transfer"),
+      z.literal("us_bank_transfer"),
+    ]),
+  }
+);
+
+export const paymentIntentNextActionKonbiniSchema = z.object({
+  expires_at: z.number(),
+  hosted_voucher_url: z.string().optional().nullable(),
+  stores: paymentIntentNextActionKonbiniStoresSchema,
 });
 
 export const paymentIntentPaymentMethodOptionsAcssDebitSchema = z.object({
   mandate_options: paymentIntentPaymentMethodOptionsMandateOptionsAcssDebitSchema.optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
   verification_method: z
     .union([
       z.literal("automatic"),
@@ -4919,7 +7470,11 @@ export const paymentIntentPaymentMethodOptionsAcssDebitSchema = z.object({
 });
 
 export const paymentIntentPaymentMethodOptionsCardSchema = z.object({
+  capture_method: z.literal("manual").optional(),
   installments: paymentMethodOptionsCardInstallmentsSchema
+    .optional()
+    .nullable(),
+  mandate_options: paymentMethodOptionsCardMandateOptionsSchema
     .optional()
     .nullable(),
   network: z
@@ -4928,6 +7483,7 @@ export const paymentIntentPaymentMethodOptionsCardSchema = z.object({
       z.literal("cartes_bancaires"),
       z.literal("diners"),
       z.literal("discover"),
+      z.literal("eftpos_au"),
       z.literal("interac"),
       z.literal("jcb"),
       z.literal("mastercard"),
@@ -4943,6 +7499,84 @@ export const paymentIntentPaymentMethodOptionsCardSchema = z.object({
       z.literal("challenge_only"),
     ])
     .optional(),
+  setup_future_usage: z
+    .union([
+      z.literal("none"),
+      z.literal("off_session"),
+      z.literal("on_session"),
+    ])
+    .optional(),
+  statement_descriptor_suffix_kana: z.string().optional(),
+  statement_descriptor_suffix_kanji: z.string().optional(),
+});
+
+export const paymentIntentProcessingSchema = z.object({
+  card: paymentIntentCardProcessingSchema.optional(),
+  type: z.literal("card"),
+});
+
+export const paymentIntentTypeSpecificPaymentMethodOptionsClientSchema = z.object(
+  {
+    capture_method: z
+      .union([z.literal("manual"), z.literal("manual_preferred")])
+      .optional(),
+    installments: paymentFlowsInstallmentOptionsSchema.optional(),
+    setup_future_usage: z
+      .union([
+        z.literal("none"),
+        z.literal("off_session"),
+        z.literal("on_session"),
+      ])
+      .optional(),
+    verification_method: z
+      .union([
+        z.literal("automatic"),
+        z.literal("instant"),
+        z.literal("microdeposits"),
+      ])
+      .optional(),
+  }
+);
+
+export const paymentLinksResourceAfterCompletionSchema = z.object({
+  hosted_confirmation: paymentLinksResourceCompletionBehaviorConfirmationPageSchema.optional(),
+  redirect: paymentLinksResourceCompletionBehaviorRedirectSchema.optional(),
+  type: z.union([z.literal("hosted_confirmation"), z.literal("redirect")]),
+});
+
+export const paymentLinksResourceCustomFieldsDropdownSchema = z.object({
+  options: z.array(paymentLinksResourceCustomFieldsDropdownOptionSchema),
+});
+
+export const paymentLinksResourceCustomTextSchema = z.object({
+  shipping_address: paymentLinksResourceCustomTextPositionSchema
+    .optional()
+    .nullable(),
+  submit: paymentLinksResourceCustomTextPositionSchema.optional().nullable(),
+  terms_of_service_acceptance: paymentLinksResourceCustomTextPositionSchema
+    .optional()
+    .nullable(),
+});
+
+export const paymentMethodCardPresentSchema = z.object({
+  brand: z.string().optional().nullable(),
+  cardholder_name: z.string().optional().nullable(),
+  country: z.string().optional().nullable(),
+  exp_month: z.number(),
+  exp_year: z.number(),
+  fingerprint: z.string().optional().nullable(),
+  funding: z.string().optional().nullable(),
+  last4: z.string().optional().nullable(),
+  networks: paymentMethodCardPresentNetworksSchema.optional().nullable(),
+  read_method: z
+    .union([
+      z.literal("contact_emv"),
+      z.literal("contactless_emv"),
+      z.literal("contactless_magstripe_mode"),
+      z.literal("magnetic_stripe_fallback"),
+      z.literal("magnetic_stripe_track2"),
+    ])
+    .optional(),
 });
 
 export const paymentMethodCardWalletSchema = z.object({
@@ -4950,12 +7584,14 @@ export const paymentMethodCardWalletSchema = z.object({
   apple_pay: paymentMethodCardWalletApplePaySchema.optional(),
   dynamic_last4: z.string().optional().nullable(),
   google_pay: paymentMethodCardWalletGooglePaySchema.optional(),
+  link: paymentMethodCardWalletLinkSchema.optional(),
   masterpass: paymentMethodCardWalletMasterpassSchema.optional(),
   samsung_pay: paymentMethodCardWalletSamsungPaySchema.optional(),
   type: z.union([
     z.literal("amex_express_checkout"),
     z.literal("apple_pay"),
     z.literal("google_pay"),
+    z.literal("link"),
     z.literal("masterpass"),
     z.literal("samsung_pay"),
     z.literal("visa_checkout"),
@@ -4968,7 +7604,9 @@ export const paymentMethodDetailsCardInstallmentsSchema = z.object({
 });
 
 export const paymentMethodDetailsCardPresentSchema = z.object({
+  amount_authorized: z.number().optional().nullable(),
   brand: z.string().optional().nullable(),
+  capture_before: z.number().optional(),
   cardholder_name: z.string().optional().nullable(),
   country: z.string().optional().nullable(),
   emv_auth_data: z.string().optional().nullable(),
@@ -4977,8 +7615,10 @@ export const paymentMethodDetailsCardPresentSchema = z.object({
   fingerprint: z.string().optional().nullable(),
   funding: z.string().optional().nullable(),
   generated_card: z.string().optional().nullable(),
+  incremental_authorization_supported: z.boolean(),
   last4: z.string().optional().nullable(),
   network: z.string().optional().nullable(),
+  overcapture_supported: z.boolean(),
   read_method: z
     .union([
       z.literal("contact_emv"),
@@ -4996,12 +7636,14 @@ export const paymentMethodDetailsCardWalletSchema = z.object({
   apple_pay: paymentMethodDetailsCardWalletApplePaySchema.optional(),
   dynamic_last4: z.string().optional().nullable(),
   google_pay: paymentMethodDetailsCardWalletGooglePaySchema.optional(),
+  link: paymentMethodDetailsCardWalletLinkSchema.optional(),
   masterpass: paymentMethodDetailsCardWalletMasterpassSchema.optional(),
   samsung_pay: paymentMethodDetailsCardWalletSamsungPaySchema.optional(),
   type: z.union([
     z.literal("amex_express_checkout"),
     z.literal("apple_pay"),
     z.literal("google_pay"),
+    z.literal("link"),
     z.literal("masterpass"),
     z.literal("samsung_pay"),
     z.literal("visa_checkout"),
@@ -5036,8 +7678,95 @@ export const paymentMethodDetailsInteracPresentSchema = z.object({
     .nullable(),
 });
 
+export const paymentMethodDetailsKonbiniSchema = z.object({
+  store: paymentMethodDetailsKonbiniStoreSchema.optional().nullable(),
+});
+
+export const paymentMethodDetailsPaypalSchema = z.object({
+  payer_email: z.string().optional().nullable(),
+  payer_id: z.string().optional().nullable(),
+  payer_name: z.string().optional().nullable(),
+  seller_protection: paypalSellerProtectionSchema.optional().nullable(),
+  transaction_id: z.string().optional().nullable(),
+});
+
+export const paymentMethodDomainResourcePaymentMethodStatusSchema = z.object({
+  status: z.union([z.literal("active"), z.literal("inactive")]),
+  status_details: paymentMethodDomainResourcePaymentMethodStatusDetailsSchema.optional(),
+});
+
+export const paymentMethodOptionsCustomerBalanceBankTransferSchema = z.object({
+  eu_bank_transfer: paymentMethodOptionsCustomerBalanceEuBankAccountSchema.optional(),
+  requested_address_types: z
+    .array(
+      z.union([
+        z.literal("aba"),
+        z.literal("iban"),
+        z.literal("sepa"),
+        z.literal("sort_code"),
+        z.literal("spei"),
+        z.literal("swift"),
+        z.literal("zengin"),
+      ])
+    )
+    .optional(),
+  type: z
+    .union([
+      z.literal("eu_bank_transfer"),
+      z.literal("gb_bank_transfer"),
+      z.literal("jp_bank_transfer"),
+      z.literal("mx_bank_transfer"),
+      z.literal("us_bank_transfer"),
+    ])
+    .optional(),
+});
+
+export const paymentMethodUsBankAccountSchema = z.object({
+  account_holder_type: z
+    .union([z.literal("company"), z.literal("individual")])
+    .optional(),
+  account_type: z
+    .union([z.literal("checking"), z.literal("savings")])
+    .optional(),
+  bank_name: z.string().optional().nullable(),
+  financial_connections_account: z.string().optional().nullable(),
+  fingerprint: z.string().optional().nullable(),
+  last4: z.string().optional().nullable(),
+  networks: usBankAccountNetworksSchema.optional().nullable(),
+  routing_number: z.string().optional().nullable(),
+  status_details: paymentMethodUsBankAccountStatusDetailsSchema
+    .optional()
+    .nullable(),
+});
+
+export const paymentPagesCheckoutSessionAfterExpirationSchema = z.object({
+  recovery: paymentPagesCheckoutSessionAfterExpirationRecoverySchema
+    .optional()
+    .nullable(),
+});
+
+export const paymentPagesCheckoutSessionCustomFieldsDropdownSchema = z.object({
+  options: z.array(paymentPagesCheckoutSessionCustomFieldsOptionSchema),
+  value: z.string().optional().nullable(),
+});
+
+export const paymentPagesCheckoutSessionCustomTextSchema = z.object({
+  shipping_address: paymentPagesCheckoutSessionCustomTextPositionSchema
+    .optional()
+    .nullable(),
+  submit: paymentPagesCheckoutSessionCustomTextPositionSchema
+    .optional()
+    .nullable(),
+  terms_of_service_acceptance: paymentPagesCheckoutSessionCustomTextPositionSchema
+    .optional()
+    .nullable(),
+});
+
 export const paymentPagesCheckoutSessionCustomerDetailsSchema = z.object({
+  address: addressSchema.optional().nullable(),
   email: z.string().optional().nullable(),
+  name: z.string().optional().nullable(),
+  phone: z.string().optional().nullable(),
   tax_exempt: z
     .union([z.literal("exempt"), z.literal("none"), z.literal("reverse")])
     .optional(),
@@ -5045,6 +7774,31 @@ export const paymentPagesCheckoutSessionCustomerDetailsSchema = z.object({
     .array(paymentPagesCheckoutSessionTaxIdSchema)
     .optional()
     .nullable(),
+});
+
+export const portalFlowsFlowSubscriptionCancelSchema = z.object({
+  retention: portalFlowsRetentionSchema.optional().nullable(),
+  subscription: z.string(),
+});
+
+export const portalFlowsFlowSubscriptionUpdateConfirmSchema = z.object({
+  discounts: z
+    .array(portalFlowsSubscriptionUpdateConfirmDiscountSchema)
+    .optional()
+    .nullable(),
+  items: z.array(portalFlowsSubscriptionUpdateConfirmItemSchema),
+  subscription: z.string(),
+});
+
+export const portalSubscriptionCancelSchema = z.object({
+  cancellation_reason: portalSubscriptionCancellationReasonSchema,
+  enabled: z.boolean(),
+  mode: z.union([z.literal("at_period_end"), z.literal("immediately")]),
+  proration_behavior: z.union([
+    z.literal("always_invoice"),
+    z.literal("create_prorations"),
+    z.literal("none"),
+  ]),
 });
 
 export const portalSubscriptionUpdateSchema = z.object({
@@ -5067,25 +7821,6 @@ export const portalSubscriptionUpdateSchema = z.object({
   ]),
 });
 
-export const productSchema = z.object({
-  active: z.boolean(),
-  created: z.number(),
-  description: z.string().optional().nullable(),
-  id: z.string(),
-  images: z.array(z.string()),
-  livemode: z.boolean(),
-  metadata: z.record(z.string()),
-  name: z.string(),
-  object: z.literal("product"),
-  package_dimensions: packageDimensionsSchema.optional().nullable(),
-  shippable: z.boolean().optional().nullable(),
-  statement_descriptor: z.string().optional().nullable(),
-  tax_code: z.union([z.string(), taxCodeSchema]).optional().nullable(),
-  unit_label: z.string().optional().nullable(),
-  updated: z.number(),
-  url: z.string().optional().nullable(),
-});
-
 export const radarValueListSchema = z.object({
   alias: z.string(),
   created: z.number(),
@@ -5096,9 +7831,12 @@ export const radarValueListSchema = z.object({
     z.literal("card_fingerprint"),
     z.literal("case_sensitive_string"),
     z.literal("country"),
+    z.literal("customer_id"),
     z.literal("email"),
     z.literal("ip_address"),
+    z.literal("sepa_debit_fingerprint"),
     z.literal("string"),
+    z.literal("us_bank_account_fingerprint"),
   ]),
   list_items: z.object({
     data: z.array(radarValueListItemSchema),
@@ -5112,11 +7850,29 @@ export const radarValueListSchema = z.object({
   object: z.literal("radar.value_list"),
 });
 
+export const refundNextActionSchema = z.object({
+  display_details: refundNextActionDisplayDetailsSchema.optional().nullable(),
+  type: z.string(),
+});
+
 export const setupAttemptPaymentMethodDetailsCardSchema = z.object({
+  brand: z.string().optional().nullable(),
+  checks: paymentMethodDetailsCardChecksSchema.optional().nullable(),
+  country: z.string().optional().nullable(),
+  exp_month: z.number().optional().nullable(),
+  exp_year: z.number().optional().nullable(),
+  fingerprint: z.string().optional().nullable(),
+  funding: z.string().optional().nullable(),
+  last4: z.string().optional().nullable(),
+  network: z.string().optional().nullable(),
   three_d_secure: threeDSecureDetailsSchema.optional().nullable(),
+  wallet: setupAttemptPaymentMethodDetailsCardWalletSchema
+    .optional()
+    .nullable(),
 });
 
 export const setupIntentNextActionSchema = z.object({
+  cashapp_handle_redirect_or_display_qr_code: paymentIntentNextActionCashappHandleRedirectOrDisplayQrCodeSchema.optional(),
   redirect_to_url: setupIntentNextActionRedirectToUrlSchema.optional(),
   type: z.string(),
   use_stripe_sdk: z.record(z.any()).optional(),
@@ -5135,21 +7891,37 @@ export const setupIntentPaymentMethodOptionsAcssDebitSchema = z.object({
     .optional(),
 });
 
-export const skuSchema = z.object({
-  active: z.boolean(),
-  attributes: z.record(z.string()),
-  created: z.number(),
-  currency: z.string(),
-  id: z.string(),
-  image: z.string().optional().nullable(),
-  inventory: skuInventorySchema,
-  livemode: z.boolean(),
-  metadata: z.record(z.string()),
-  object: z.literal("sku"),
-  package_dimensions: packageDimensionsSchema.optional().nullable(),
-  price: z.number(),
-  product: z.union([z.string(), productSchema]),
-  updated: z.number(),
+export const setupIntentPaymentMethodOptionsCardSchema = z.object({
+  mandate_options: setupIntentPaymentMethodOptionsCardMandateOptionsSchema
+    .optional()
+    .nullable(),
+  network: z
+    .union([
+      z.literal("amex"),
+      z.literal("cartes_bancaires"),
+      z.literal("diners"),
+      z.literal("discover"),
+      z.literal("eftpos_au"),
+      z.literal("interac"),
+      z.literal("jcb"),
+      z.literal("mastercard"),
+      z.literal("unionpay"),
+      z.literal("unknown"),
+      z.literal("visa"),
+    ])
+    .optional(),
+  request_three_d_secure: z
+    .union([
+      z.literal("any"),
+      z.literal("automatic"),
+      z.literal("challenge_only"),
+    ])
+    .optional(),
+});
+
+export const shippingRateDeliveryEstimateSchema = z.object({
+  maximum: shippingRateDeliveryEstimateBoundSchema.optional().nullable(),
+  minimum: shippingRateDeliveryEstimateBoundSchema.optional().nullable(),
 });
 
 export const sourceOrderSchema = z.object({
@@ -5194,6 +7966,202 @@ export const sourceTransactionSchema = z.object({
   ]),
 });
 
+export const taxTransactionLineItemSchema = z.object({
+  amount: z.number(),
+  amount_tax: z.number(),
+  id: z.string(),
+  livemode: z.boolean(),
+  metadata: z.record(z.string()).optional().nullable(),
+  object: z.literal("tax.transaction_line_item"),
+  product: z.string().optional().nullable(),
+  quantity: z.number(),
+  reference: z.string(),
+  reversal: taxProductResourceTaxTransactionLineItemResourceReversalSchema
+    .optional()
+    .nullable(),
+  tax_behavior: z.union([z.literal("exclusive"), z.literal("inclusive")]),
+  tax_code: z.string(),
+  type: z.union([z.literal("reversal"), z.literal("transaction")]),
+});
+
+export const taxProductResourceCustomerDetailsSchema = z.object({
+  address: taxProductResourcePostalAddressSchema.optional().nullable(),
+  address_source: z
+    .union([z.literal("billing"), z.literal("shipping")])
+    .optional(),
+  ip_address: z.string().optional().nullable(),
+  tax_ids: z.array(taxProductResourceCustomerDetailsResourceTaxIdSchema),
+  taxability_override: z.union([
+    z.literal("customer_exempt"),
+    z.literal("none"),
+    z.literal("reverse_charge"),
+  ]),
+});
+
+export const taxProductResourceLineItemTaxBreakdownSchema = z.object({
+  amount: z.number(),
+  jurisdiction: taxProductResourceJurisdictionSchema,
+  sourcing: z.union([z.literal("destination"), z.literal("origin")]),
+  tax_rate_details: taxProductResourceLineItemTaxRateDetailsSchema
+    .optional()
+    .nullable(),
+  taxability_reason: z.union([
+    z.literal("customer_exempt"),
+    z.literal("not_collecting"),
+    z.literal("not_subject_to_tax"),
+    z.literal("not_supported"),
+    z.literal("portion_product_exempt"),
+    z.literal("portion_reduced_rated"),
+    z.literal("portion_standard_rated"),
+    z.literal("product_exempt"),
+    z.literal("product_exempt_holiday"),
+    z.literal("proportionally_rated"),
+    z.literal("reduced_rated"),
+    z.literal("reverse_charge"),
+    z.literal("standard_rated"),
+    z.literal("taxable_basis_reduced"),
+    z.literal("zero_rated"),
+  ]),
+  taxable_amount: z.number(),
+});
+
+export const taxProductResourceTaxBreakdownSchema = z.object({
+  amount: z.number(),
+  inclusive: z.boolean(),
+  tax_rate_details: taxProductResourceTaxRateDetailsSchema,
+  taxability_reason: z.union([
+    z.literal("customer_exempt"),
+    z.literal("not_collecting"),
+    z.literal("not_subject_to_tax"),
+    z.literal("not_supported"),
+    z.literal("portion_product_exempt"),
+    z.literal("portion_reduced_rated"),
+    z.literal("portion_standard_rated"),
+    z.literal("product_exempt"),
+    z.literal("product_exempt_holiday"),
+    z.literal("proportionally_rated"),
+    z.literal("reduced_rated"),
+    z.literal("reverse_charge"),
+    z.literal("standard_rated"),
+    z.literal("taxable_basis_reduced"),
+    z.literal("zero_rated"),
+  ]),
+  taxable_amount: z.number(),
+});
+
+export const taxProductResourceTaxCalculationShippingCostSchema = z.object({
+  amount: z.number(),
+  amount_tax: z.number(),
+  shipping_rate: z.string().optional(),
+  tax_behavior: z.union([z.literal("exclusive"), z.literal("inclusive")]),
+  tax_breakdown: z
+    .array(taxProductResourceLineItemTaxBreakdownSchema)
+    .optional(),
+  tax_code: z.string(),
+});
+
+export const taxProductResourceTaxSettingsStatusDetailsSchema = z.object({
+  active: taxProductResourceTaxSettingsStatusDetailsResourceActiveSchema.optional(),
+  pending: taxProductResourceTaxSettingsStatusDetailsResourcePendingSchema.optional(),
+});
+
+export const terminalReaderReaderResourceCartSchema = z.object({
+  currency: z.string(),
+  line_items: z.array(terminalReaderReaderResourceLineItemSchema),
+  tax: z.number().optional().nullable(),
+  total: z.number(),
+});
+
+export const terminalReaderReaderResourceProcessConfigSchema = z.object({
+  skip_tipping: z.boolean().optional(),
+  tipping: terminalReaderReaderResourceTippingConfigSchema.optional(),
+});
+
+export const terminalReaderReaderResourceSetReaderDisplayActionSchema = z.object(
+  {
+    cart: terminalReaderReaderResourceCartSchema.optional().nullable(),
+    type: z.literal("cart"),
+  }
+);
+
+export const treasuryFinancialAccountsResourceAbaToggleSettingsSchema = z.object(
+  {
+    requested: z.boolean(),
+    status: z.union([
+      z.literal("active"),
+      z.literal("pending"),
+      z.literal("restricted"),
+    ]),
+    status_details: z.array(
+      treasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
+    ),
+  }
+);
+
+export const treasuryFinancialAccountsResourceAchToggleSettingsSchema = z.object(
+  {
+    requested: z.boolean(),
+    status: z.union([
+      z.literal("active"),
+      z.literal("pending"),
+      z.literal("restricted"),
+    ]),
+    status_details: z.array(
+      treasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
+    ),
+  }
+);
+
+export const treasuryFinancialAccountsResourceFinancialAddressesFeaturesSchema = z.object(
+  {
+    aba: treasuryFinancialAccountsResourceAbaToggleSettingsSchema.optional(),
+  }
+);
+
+export const treasuryFinancialAccountsResourceInboundTransfersSchema = z.object(
+  {
+    ach: treasuryFinancialAccountsResourceAchToggleSettingsSchema.optional(),
+  }
+);
+
+export const treasuryFinancialAccountsResourceToggleSettingsSchema = z.object({
+  requested: z.boolean(),
+  status: z.union([
+    z.literal("active"),
+    z.literal("pending"),
+    z.literal("restricted"),
+  ]),
+  status_details: z.array(
+    treasuryFinancialAccountsResourceTogglesSettingStatusDetailsSchema
+  ),
+});
+
+export const treasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsSchema = z.object(
+  {
+    balance: z.literal("payments").optional(),
+    billing_details: treasurySharedResourceBillingDetailsSchema,
+    financial_account: receivedPaymentMethodDetailsFinancialAccountSchema.optional(),
+    issuing_card: z.string().optional(),
+    type: z.union([
+      z.literal("balance"),
+      z.literal("financial_account"),
+      z.literal("issuing_card"),
+      z.literal("stripe"),
+      z.literal("us_bank_account"),
+    ]),
+    us_bank_account: treasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccountSchema.optional(),
+  }
+);
+
+export const accountSessionSchema = z.object({
+  account: z.string(),
+  client_secret: z.string(),
+  components: connectEmbeddedAccountSessionCreateComponentsSchema,
+  expires_at: z.number(),
+  livemode: z.boolean(),
+  object: z.literal("account_session"),
+});
+
 export const balanceSchema = z.object({
   available: z.array(balanceAmountSchema),
   connect_reserved: z.array(balanceAmountSchema).optional(),
@@ -5209,30 +8177,138 @@ export const cardGeneratedFromPaymentMethodDetailsSchema = z.object({
   type: z.string(),
 });
 
-export const orderItemSchema = z.object({
-  amount: z.number(),
-  currency: z.string(),
-  description: z.string(),
-  object: z.literal("order_item"),
-  parent: z.union([z.string(), skuSchema]).optional().nullable(),
-  quantity: z.number().optional().nullable(),
-  type: z.string(),
+export const checkoutSessionPaymentMethodOptionsSchema = z.object({
+  acss_debit: checkoutAcssDebitPaymentMethodOptionsSchema.optional(),
+  affirm: checkoutAffirmPaymentMethodOptionsSchema.optional(),
+  afterpay_clearpay: checkoutAfterpayClearpayPaymentMethodOptionsSchema.optional(),
+  alipay: checkoutAlipayPaymentMethodOptionsSchema.optional(),
+  au_becs_debit: checkoutAuBecsDebitPaymentMethodOptionsSchema.optional(),
+  bacs_debit: checkoutBacsDebitPaymentMethodOptionsSchema.optional(),
+  bancontact: checkoutBancontactPaymentMethodOptionsSchema.optional(),
+  boleto: checkoutBoletoPaymentMethodOptionsSchema.optional(),
+  card: checkoutCardPaymentMethodOptionsSchema.optional(),
+  cashapp: checkoutCashappPaymentMethodOptionsSchema.optional(),
+  customer_balance: checkoutCustomerBalancePaymentMethodOptionsSchema.optional(),
+  eps: checkoutEpsPaymentMethodOptionsSchema.optional(),
+  fpx: checkoutFpxPaymentMethodOptionsSchema.optional(),
+  giropay: checkoutGiropayPaymentMethodOptionsSchema.optional(),
+  grabpay: checkoutGrabPayPaymentMethodOptionsSchema.optional(),
+  ideal: checkoutIdealPaymentMethodOptionsSchema.optional(),
+  klarna: checkoutKlarnaPaymentMethodOptionsSchema.optional(),
+  konbini: checkoutKonbiniPaymentMethodOptionsSchema.optional(),
+  link: checkoutLinkPaymentMethodOptionsSchema.optional(),
+  oxxo: checkoutOxxoPaymentMethodOptionsSchema.optional(),
+  p24: checkoutP24PaymentMethodOptionsSchema.optional(),
+  paynow: checkoutPaynowPaymentMethodOptionsSchema.optional(),
+  pix: checkoutPixPaymentMethodOptionsSchema.optional(),
+  sepa_debit: checkoutSepaDebitPaymentMethodOptionsSchema.optional(),
+  sofort: checkoutSofortPaymentMethodOptionsSchema.optional(),
+  us_bank_account: checkoutUsBankAccountPaymentMethodOptionsSchema.optional(),
 });
 
-export const paymentIntentPaymentMethodOptionsSchema = z.object({
-  acss_debit: paymentIntentPaymentMethodOptionsAcssDebitSchema.optional(),
-  afterpay_clearpay: paymentMethodOptionsAfterpayClearpaySchema.optional(),
-  alipay: paymentMethodOptionsAlipaySchema.optional(),
-  bancontact: paymentMethodOptionsBancontactSchema.optional(),
-  boleto: paymentMethodOptionsBoletoSchema.optional(),
-  card: paymentIntentPaymentMethodOptionsCardSchema.optional(),
-  card_present: paymentMethodOptionsCardPresentSchema.optional(),
-  ideal: paymentMethodOptionsIdealSchema.optional(),
-  oxxo: paymentMethodOptionsOxxoSchema.optional(),
-  p24: paymentMethodOptionsP24Schema.optional(),
-  sepa_debit: paymentIntentPaymentMethodOptionsSepaDebitSchema.optional(),
-  sofort: paymentMethodOptionsSofortSchema.optional(),
-  wechat_pay: paymentMethodOptionsWechatPaySchema.optional(),
+export const customerBalanceResourceCashBalanceTransactionResourceFundedTransactionSchema = z.object(
+  {
+    bank_transfer: customerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferSchema,
+  }
+);
+
+export const fundingInstructionsBankTransferSchema = z.object({
+  country: z.string(),
+  financial_addresses: z.array(
+    fundingInstructionsBankTransferFinancialAddressSchema
+  ),
+  type: z.union([z.literal("eu_bank_transfer"), z.literal("jp_bank_transfer")]),
+});
+
+export const invoicePaymentMethodOptionsCustomerBalanceSchema = z.object({
+  bank_transfer: invoicePaymentMethodOptionsCustomerBalanceBankTransferSchema.optional(),
+  funding_type: z.literal("bank_transfer").optional(),
+});
+
+export const invoicesPaymentMethodOptionsSchema = z.object({
+  acss_debit: invoicePaymentMethodOptionsAcssDebitSchema.optional().nullable(),
+  bancontact: invoicePaymentMethodOptionsBancontactSchema.optional().nullable(),
+  card: invoicePaymentMethodOptionsCardSchema.optional().nullable(),
+  customer_balance: invoicePaymentMethodOptionsCustomerBalanceSchema
+    .optional()
+    .nullable(),
+  konbini: invoicePaymentMethodOptionsKonbiniSchema.optional().nullable(),
+  us_bank_account: invoicePaymentMethodOptionsUsBankAccountSchema
+    .optional()
+    .nullable(),
+});
+
+export const invoicesPaymentSettingsSchema = z.object({
+  default_mandate: z.string().optional().nullable(),
+  payment_method_options: invoicesPaymentMethodOptionsSchema
+    .optional()
+    .nullable(),
+  payment_method_types: z
+    .array(
+      z.union([
+        z.literal("ach_credit_transfer"),
+        z.literal("ach_debit"),
+        z.literal("acss_debit"),
+        z.literal("au_becs_debit"),
+        z.literal("bacs_debit"),
+        z.literal("bancontact"),
+        z.literal("boleto"),
+        z.literal("card"),
+        z.literal("cashapp"),
+        z.literal("customer_balance"),
+        z.literal("fpx"),
+        z.literal("giropay"),
+        z.literal("grabpay"),
+        z.literal("ideal"),
+        z.literal("konbini"),
+        z.literal("link"),
+        z.literal("paynow"),
+        z.literal("paypal"),
+        z.literal("promptpay"),
+        z.literal("sepa_debit"),
+        z.literal("sofort"),
+        z.literal("us_bank_account"),
+        z.literal("wechat_pay"),
+      ])
+    )
+    .optional()
+    .nullable(),
+});
+
+export const paymentIntentNextActionSchema = z.object({
+  alipay_handle_redirect: paymentIntentNextActionAlipayHandleRedirectSchema.optional(),
+  boleto_display_details: paymentIntentNextActionBoletoSchema.optional(),
+  card_await_notification: paymentIntentNextActionCardAwaitNotificationSchema.optional(),
+  cashapp_handle_redirect_or_display_qr_code: paymentIntentNextActionCashappHandleRedirectOrDisplayQrCodeSchema.optional(),
+  display_bank_transfer_instructions: paymentIntentNextActionDisplayBankTransferInstructionsSchema.optional(),
+  konbini_display_details: paymentIntentNextActionKonbiniSchema.optional(),
+  oxxo_display_details: paymentIntentNextActionDisplayOxxoDetailsSchema.optional(),
+  paynow_display_qr_code: paymentIntentNextActionPaynowDisplayQrCodeSchema.optional(),
+  pix_display_qr_code: paymentIntentNextActionPixDisplayQrCodeSchema.optional(),
+  promptpay_display_qr_code: paymentIntentNextActionPromptpayDisplayQrCodeSchema.optional(),
+  redirect_to_url: paymentIntentNextActionRedirectToUrlSchema.optional(),
+  type: z.string(),
+  use_stripe_sdk: z.record(z.any()).optional(),
+  verify_with_microdeposits: paymentIntentNextActionVerifyWithMicrodepositsSchema.optional(),
+  wechat_pay_display_qr_code: paymentIntentNextActionWechatPayDisplayQrCodeSchema.optional(),
+  wechat_pay_redirect_to_android_app: paymentIntentNextActionWechatPayRedirectToAndroidAppSchema.optional(),
+  wechat_pay_redirect_to_ios_app: paymentIntentNextActionWechatPayRedirectToIosAppSchema.optional(),
+});
+
+export const paymentLinksResourceCustomFieldsSchema = z.object({
+  dropdown: paymentLinksResourceCustomFieldsDropdownSchema
+    .optional()
+    .nullable(),
+  key: z.string(),
+  label: paymentLinksResourceCustomFieldsLabelSchema,
+  numeric: paymentLinksResourceCustomFieldsNumericSchema.optional().nullable(),
+  optional: z.boolean(),
+  text: paymentLinksResourceCustomFieldsTextSchema.optional().nullable(),
+  type: z.union([
+    z.literal("dropdown"),
+    z.literal("numeric"),
+    z.literal("text"),
+  ]),
 });
 
 export const paymentMethodDetailsCardSchema = z.object({
@@ -5247,47 +8323,50 @@ export const paymentMethodDetailsCardSchema = z.object({
     .optional()
     .nullable(),
   last4: z.string().optional().nullable(),
+  mandate: z.string().optional().nullable(),
   network: z.string().optional().nullable(),
-  three_d_secure: threeDSecureDetailsSchema.optional().nullable(),
+  network_token: paymentMethodDetailsCardNetworkTokenSchema
+    .optional()
+    .nullable(),
+  three_d_secure: threeDSecureDetailsChargeSchema.optional().nullable(),
   wallet: paymentMethodDetailsCardWalletSchema.optional().nullable(),
 });
 
-export const planSchema = z.object({
-  active: z.boolean(),
-  aggregate_usage: z
-    .union([
-      z.literal("last_during_period"),
-      z.literal("last_ever"),
-      z.literal("max"),
-      z.literal("sum"),
-    ])
-    .optional(),
-  amount: z.number().optional().nullable(),
-  amount_decimal: z.string().optional().nullable(),
-  billing_scheme: z.union([z.literal("per_unit"), z.literal("tiered")]),
+export const paymentMethodDomainSchema = z.object({
+  apple_pay: paymentMethodDomainResourcePaymentMethodStatusSchema,
   created: z.number(),
-  currency: z.string(),
+  domain_name: z.string(),
+  enabled: z.boolean(),
+  google_pay: paymentMethodDomainResourcePaymentMethodStatusSchema,
   id: z.string(),
-  interval: z.union([
-    z.literal("day"),
-    z.literal("month"),
-    z.literal("week"),
-    z.literal("year"),
-  ]),
-  interval_count: z.number(),
+  link: paymentMethodDomainResourcePaymentMethodStatusSchema,
   livemode: z.boolean(),
-  metadata: z.record(z.string()).optional().nullable(),
-  nickname: z.string().optional().nullable(),
-  object: z.literal("plan"),
-  product: z
-    .union([z.string(), productSchema, deletedProductSchema])
+  object: z.literal("payment_method_domain"),
+  paypal: paymentMethodDomainResourcePaymentMethodStatusSchema,
+});
+
+export const paymentMethodOptionsCustomerBalanceSchema = z.object({
+  bank_transfer: paymentMethodOptionsCustomerBalanceBankTransferSchema.optional(),
+  funding_type: z.literal("bank_transfer").optional(),
+  setup_future_usage: z.literal("none").optional(),
+});
+
+export const paymentPagesCheckoutSessionCustomFieldsSchema = z.object({
+  dropdown: paymentPagesCheckoutSessionCustomFieldsDropdownSchema
     .optional()
     .nullable(),
-  tiers: z.array(planTierSchema).optional(),
-  tiers_mode: z.union([z.literal("graduated"), z.literal("volume")]).optional(),
-  transform_usage: transformUsageSchema.optional().nullable(),
-  trial_period_days: z.number().optional().nullable(),
-  usage_type: z.union([z.literal("licensed"), z.literal("metered")]),
+  key: z.string(),
+  label: paymentPagesCheckoutSessionCustomFieldsLabelSchema,
+  numeric: paymentPagesCheckoutSessionCustomFieldsNumericSchema
+    .optional()
+    .nullable(),
+  optional: z.boolean(),
+  text: paymentPagesCheckoutSessionCustomFieldsTextSchema.optional().nullable(),
+  type: z.union([
+    z.literal("dropdown"),
+    z.literal("numeric"),
+    z.literal("text"),
+  ]),
 });
 
 export const portalFeaturesSchema = z.object({
@@ -5299,19 +8378,69 @@ export const portalFeaturesSchema = z.object({
   subscription_update: portalSubscriptionUpdateSchema,
 });
 
-export const priceSchema = z.object({
+export const portalFlowsFlowSchema = z.object({
+  after_completion: portalFlowsFlowAfterCompletionSchema,
+  subscription_cancel: portalFlowsFlowSubscriptionCancelSchema
+    .optional()
+    .nullable(),
+  subscription_update: portalFlowsFlowSubscriptionUpdateSchema
+    .optional()
+    .nullable(),
+  subscription_update_confirm: portalFlowsFlowSubscriptionUpdateConfirmSchema
+    .optional()
+    .nullable(),
+  type: z.union([
+    z.literal("payment_method_update"),
+    z.literal("subscription_cancel"),
+    z.literal("subscription_update"),
+    z.literal("subscription_update_confirm"),
+  ]),
+});
+
+export const setupIntentPaymentMethodOptionsSchema = z.object({
+  acss_debit: z
+    .union([
+      setupIntentPaymentMethodOptionsAcssDebitSchema,
+      setupIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  card: setupIntentPaymentMethodOptionsCardSchema.optional(),
+  link: z
+    .union([
+      setupIntentPaymentMethodOptionsLinkSchema,
+      setupIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  paypal: z
+    .union([
+      setupIntentPaymentMethodOptionsPaypalSchema,
+      setupIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  sepa_debit: z
+    .union([
+      setupIntentPaymentMethodOptionsSepaDebitSchema,
+      setupIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  us_bank_account: z
+    .union([
+      setupIntentPaymentMethodOptionsUsBankAccountSchema,
+      setupIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+});
+
+export const shippingRateSchema = z.object({
   active: z.boolean(),
-  billing_scheme: z.union([z.literal("per_unit"), z.literal("tiered")]),
   created: z.number(),
-  currency: z.string(),
+  delivery_estimate: shippingRateDeliveryEstimateSchema.optional().nullable(),
+  display_name: z.string().optional().nullable(),
+  fixed_amount: shippingRateFixedAmountSchema.optional(),
   id: z.string(),
   livemode: z.boolean(),
-  lookup_key: z.string().optional().nullable(),
   metadata: z.record(z.string()),
-  nickname: z.string().optional().nullable(),
-  object: z.literal("price"),
-  product: z.union([z.string(), productSchema, deletedProductSchema]),
-  recurring: recurringSchema.optional().nullable(),
+  object: z.literal("shipping_rate"),
   tax_behavior: z
     .union([
       z.literal("exclusive"),
@@ -5319,18 +8448,8 @@ export const priceSchema = z.object({
       z.literal("unspecified"),
     ])
     .optional(),
-  tiers: z.array(priceTierSchema).optional(),
-  tiers_mode: z.union([z.literal("graduated"), z.literal("volume")]).optional(),
-  transform_quantity: transformQuantitySchema.optional().nullable(),
-  type: z.union([z.literal("one_time"), z.literal("recurring")]),
-  unit_amount: z.number().optional().nullable(),
-  unit_amount_decimal: z.string().optional().nullable(),
-});
-
-export const setupIntentPaymentMethodOptionsSchema = z.object({
-  acss_debit: setupIntentPaymentMethodOptionsAcssDebitSchema.optional(),
-  card: setupIntentPaymentMethodOptionsCardSchema.optional(),
-  sepa_debit: setupIntentPaymentMethodOptionsSepaDebitSchema.optional(),
+  tax_code: z.union([z.string(), taxCodeSchema]).optional().nullable(),
+  type: z.literal("fixed_amount"),
 });
 
 export const sourceSchema = z.object({
@@ -5407,46 +8526,135 @@ export const sourceMandateNotificationSchema = z.object({
   type: z.string(),
 });
 
-export const subscriptionItemSchema = z.object({
-  billing_thresholds: subscriptionItemBillingThresholdsSchema
+export const subscriptionsResourcePaymentMethodOptionsSchema = z.object({
+  acss_debit: invoicePaymentMethodOptionsAcssDebitSchema.optional().nullable(),
+  bancontact: invoicePaymentMethodOptionsBancontactSchema.optional().nullable(),
+  card: subscriptionPaymentMethodOptionsCardSchema.optional().nullable(),
+  customer_balance: invoicePaymentMethodOptionsCustomerBalanceSchema
     .optional()
     .nullable(),
-  created: z.number(),
+  konbini: invoicePaymentMethodOptionsKonbiniSchema.optional().nullable(),
+  us_bank_account: invoicePaymentMethodOptionsUsBankAccountSchema
+    .optional()
+    .nullable(),
+});
+
+export const subscriptionsResourcePaymentSettingsSchema = z.object({
+  payment_method_options: subscriptionsResourcePaymentMethodOptionsSchema
+    .optional()
+    .nullable(),
+  payment_method_types: z
+    .array(
+      z.union([
+        z.literal("ach_credit_transfer"),
+        z.literal("ach_debit"),
+        z.literal("acss_debit"),
+        z.literal("au_becs_debit"),
+        z.literal("bacs_debit"),
+        z.literal("bancontact"),
+        z.literal("boleto"),
+        z.literal("card"),
+        z.literal("cashapp"),
+        z.literal("customer_balance"),
+        z.literal("fpx"),
+        z.literal("giropay"),
+        z.literal("grabpay"),
+        z.literal("ideal"),
+        z.literal("konbini"),
+        z.literal("link"),
+        z.literal("paynow"),
+        z.literal("paypal"),
+        z.literal("promptpay"),
+        z.literal("sepa_debit"),
+        z.literal("sofort"),
+        z.literal("us_bank_account"),
+        z.literal("wechat_pay"),
+      ])
+    )
+    .optional()
+    .nullable(),
+  save_default_payment_method: z
+    .union([z.literal("off"), z.literal("on_subscription")])
+    .optional(),
+});
+
+export const taxCalculationLineItemSchema = z.object({
+  amount: z.number(),
+  amount_tax: z.number(),
   id: z.string(),
-  metadata: z.record(z.string()),
-  object: z.literal("subscription_item"),
-  price: priceSchema,
-  quantity: z.number().optional(),
-  subscription: z.string(),
-  tax_rates: z.array(taxRateSchema).optional().nullable(),
-});
-
-export const subscriptionScheduleAddInvoiceItemSchema = z.object({
-  price: z.union([z.string(), priceSchema, deletedPriceSchema]),
-  quantity: z.number().optional().nullable(),
-  tax_rates: z.array(taxRateSchema).optional().nullable(),
-});
-
-export const subscriptionScheduleConfigurationItemSchema = z.object({
-  billing_thresholds: subscriptionItemBillingThresholdsSchema
+  livemode: z.boolean(),
+  object: z.literal("tax.calculation_line_item"),
+  product: z.string().optional().nullable(),
+  quantity: z.number(),
+  reference: z.string().optional().nullable(),
+  tax_behavior: z.union([z.literal("exclusive"), z.literal("inclusive")]),
+  tax_breakdown: z
+    .array(taxProductResourceLineItemTaxBreakdownSchema)
     .optional()
     .nullable(),
-  price: z.union([z.string(), priceSchema, deletedPriceSchema]),
-  quantity: z.number().optional(),
-  tax_rates: z.array(taxRateSchema).optional().nullable(),
+  tax_code: z.string(),
 });
 
-export const subscriptionsResourcePendingUpdateSchema = z.object({
-  billing_cycle_anchor: z.number().optional().nullable(),
-  expires_at: z.number(),
-  subscription_items: z.array(subscriptionItemSchema).optional().nullable(),
-  trial_end: z.number().optional().nullable(),
-  trial_from_plan: z.boolean().optional().nullable(),
+export const taxSettingsSchema = z.object({
+  defaults: taxProductResourceTaxSettingsDefaultsSchema,
+  head_office: taxProductResourceTaxSettingsHeadOfficeSchema
+    .optional()
+    .nullable(),
+  livemode: z.boolean(),
+  object: z.literal("tax.settings"),
+  status: z.union([z.literal("active"), z.literal("pending")]),
+  status_details: taxProductResourceTaxSettingsStatusDetailsSchema,
 });
+
+export const taxTransactionSchema = z.object({
+  created: z.number(),
+  currency: z.string(),
+  customer: z.string().optional().nullable(),
+  customer_details: taxProductResourceCustomerDetailsSchema,
+  id: z.string(),
+  line_items: z
+    .object({
+      data: z.array(taxTransactionLineItemSchema),
+      has_more: z.boolean(),
+      object: z.literal("list"),
+      url: z.string(),
+    })
+    .optional()
+    .nullable(),
+  livemode: z.boolean(),
+  metadata: z.record(z.string()).optional().nullable(),
+  object: z.literal("tax.transaction"),
+  reference: z.string(),
+  reversal: taxProductResourceTaxTransactionResourceReversalSchema
+    .optional()
+    .nullable(),
+  shipping_cost: taxProductResourceTaxTransactionShippingCostSchema
+    .optional()
+    .nullable(),
+  tax_date: z.number(),
+  type: z.union([z.literal("reversal"), z.literal("transaction")]),
+});
+
+export const treasuryFinancialAccountsResourceOutboundPaymentsSchema = z.object(
+  {
+    ach: treasuryFinancialAccountsResourceAchToggleSettingsSchema.optional(),
+    us_domestic_wire: treasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
+  }
+);
+
+export const treasuryFinancialAccountsResourceOutboundTransfersSchema = z.object(
+  {
+    ach: treasuryFinancialAccountsResourceAchToggleSettingsSchema.optional(),
+    us_domestic_wire: treasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
+  }
+);
 
 export const billingPortalConfigurationSchema = z.object({
   active: z.boolean(),
-  application: z.string().optional().nullable(),
+  application: z
+    .union([z.string(), applicationSchema, deletedApplicationSchema])
+    .optional()
+    .nullable(),
   business_profile: portalBusinessProfileSchema,
   created: z.number(),
   default_return_url: z.string().optional().nullable(),
@@ -5454,6 +8662,8 @@ export const billingPortalConfigurationSchema = z.object({
   id: z.string(),
   is_default: z.boolean(),
   livemode: z.boolean(),
+  login_page: portalLoginPageSchema,
+  metadata: z.record(z.string()).optional().nullable(),
   object: z.literal("billing_portal.configuration"),
   updated: z.number(),
 });
@@ -5462,6 +8672,7 @@ export const billingPortalSessionSchema = z.object({
   configuration: z.union([z.string(), billingPortalConfigurationSchema]),
   created: z.number(),
   customer: z.string(),
+  flow: portalFlowsFlowSchema.optional().nullable(),
   id: z.string(),
   livemode: z.boolean(),
   locale: z
@@ -5517,6 +8728,353 @@ export const billingPortalSessionSchema = z.object({
     .optional(),
   object: z.literal("billing_portal.session"),
   on_behalf_of: z.string().optional().nullable(),
-  return_url: z.string(),
+  return_url: z.string().optional().nullable(),
   url: z.string(),
+});
+
+export const fundingInstructionsSchema = z.object({
+  bank_transfer: fundingInstructionsBankTransferSchema,
+  currency: z.string(),
+  funding_type: z.literal("bank_transfer"),
+  livemode: z.boolean(),
+  object: z.literal("funding_instructions"),
+});
+
+export const invoicesShippingCostSchema = z.object({
+  amount_subtotal: z.number(),
+  amount_tax: z.number(),
+  amount_total: z.number(),
+  shipping_rate: z
+    .union([z.string(), shippingRateSchema])
+    .optional()
+    .nullable(),
+  taxes: z.array(lineItemsTaxAmountSchema).optional(),
+});
+
+export const paymentIntentPaymentMethodOptionsSchema = z.object({
+  acss_debit: z
+    .union([
+      paymentIntentPaymentMethodOptionsAcssDebitSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  affirm: z
+    .union([
+      paymentMethodOptionsAffirmSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  afterpay_clearpay: z
+    .union([
+      paymentMethodOptionsAfterpayClearpaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  alipay: z
+    .union([
+      paymentMethodOptionsAlipaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  au_becs_debit: z
+    .union([
+      paymentIntentPaymentMethodOptionsAuBecsDebitSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  bacs_debit: z
+    .union([
+      paymentMethodOptionsBacsDebitSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  bancontact: z
+    .union([
+      paymentMethodOptionsBancontactSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  blik: z
+    .union([
+      paymentIntentPaymentMethodOptionsBlikSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  boleto: z
+    .union([
+      paymentMethodOptionsBoletoSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  card: z
+    .union([
+      paymentIntentPaymentMethodOptionsCardSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  card_present: z
+    .union([
+      paymentMethodOptionsCardPresentSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  cashapp: z
+    .union([
+      paymentMethodOptionsCashappSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  customer_balance: z
+    .union([
+      paymentMethodOptionsCustomerBalanceSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  eps: z
+    .union([
+      paymentIntentPaymentMethodOptionsEpsSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  fpx: z
+    .union([
+      paymentMethodOptionsFpxSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  giropay: z
+    .union([
+      paymentMethodOptionsGiropaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  grabpay: z
+    .union([
+      paymentMethodOptionsGrabpaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  ideal: z
+    .union([
+      paymentMethodOptionsIdealSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  interac_present: z
+    .union([
+      paymentMethodOptionsInteracPresentSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  klarna: z
+    .union([
+      paymentMethodOptionsKlarnaSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  konbini: z
+    .union([
+      paymentMethodOptionsKonbiniSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  link: z
+    .union([
+      paymentIntentPaymentMethodOptionsLinkSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  oxxo: z
+    .union([
+      paymentMethodOptionsOxxoSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  p24: z
+    .union([
+      paymentMethodOptionsP24Schema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  paynow: z
+    .union([
+      paymentMethodOptionsPaynowSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  paypal: z
+    .union([
+      paymentMethodOptionsPaypalSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  pix: z
+    .union([
+      paymentMethodOptionsPixSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  promptpay: z
+    .union([
+      paymentMethodOptionsPromptpaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  sepa_debit: z
+    .union([
+      paymentIntentPaymentMethodOptionsSepaDebitSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  sofort: z
+    .union([
+      paymentMethodOptionsSofortSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  us_bank_account: z
+    .union([
+      paymentIntentPaymentMethodOptionsUsBankAccountSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  wechat_pay: z
+    .union([
+      paymentMethodOptionsWechatPaySchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+  zip: z
+    .union([
+      paymentMethodOptionsZipSchema,
+      paymentIntentTypeSpecificPaymentMethodOptionsClientSchema,
+    ])
+    .optional(),
+});
+
+export const paymentLinksResourceShippingOptionSchema = z.object({
+  shipping_amount: z.number(),
+  shipping_rate: z.union([z.string(), shippingRateSchema]),
+});
+
+export const paymentPagesCheckoutSessionShippingCostSchema = z.object({
+  amount_subtotal: z.number(),
+  amount_tax: z.number(),
+  amount_total: z.number(),
+  shipping_rate: z
+    .union([z.string(), shippingRateSchema])
+    .optional()
+    .nullable(),
+  taxes: z.array(lineItemsTaxAmountSchema).optional(),
+});
+
+export const paymentPagesCheckoutSessionShippingOptionSchema = z.object({
+  shipping_amount: z.number(),
+  shipping_rate: z.union([z.string(), shippingRateSchema]),
+});
+
+export const taxCalculationSchema = z.object({
+  amount_total: z.number(),
+  currency: z.string(),
+  customer: z.string().optional().nullable(),
+  customer_details: taxProductResourceCustomerDetailsSchema,
+  expires_at: z.number().optional().nullable(),
+  id: z.string().optional().nullable(),
+  line_items: z
+    .object({
+      data: z.array(taxCalculationLineItemSchema),
+      has_more: z.boolean(),
+      object: z.literal("list"),
+      url: z.string(),
+    })
+    .optional()
+    .nullable(),
+  livemode: z.boolean(),
+  object: z.literal("tax.calculation"),
+  shipping_cost: taxProductResourceTaxCalculationShippingCostSchema
+    .optional()
+    .nullable(),
+  tax_amount_exclusive: z.number(),
+  tax_amount_inclusive: z.number(),
+  tax_breakdown: z.array(taxProductResourceTaxBreakdownSchema),
+  tax_date: z.number(),
+});
+
+export const treasuryFinancialAccountFeaturesSchema = z.object({
+  card_issuing: treasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
+  deposit_insurance: treasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
+  financial_addresses: treasuryFinancialAccountsResourceFinancialAddressesFeaturesSchema.optional(),
+  inbound_transfers: treasuryFinancialAccountsResourceInboundTransfersSchema.optional(),
+  intra_stripe_flows: treasuryFinancialAccountsResourceToggleSettingsSchema.optional(),
+  object: z.literal("treasury.financial_account_features"),
+  outbound_payments: treasuryFinancialAccountsResourceOutboundPaymentsSchema.optional(),
+  outbound_transfers: treasuryFinancialAccountsResourceOutboundTransfersSchema.optional(),
+});
+
+export const treasuryFinancialAccountSchema = z.object({
+  active_features: z
+    .array(
+      z.union([
+        z.literal("card_issuing"),
+        z.literal("deposit_insurance"),
+        z.literal("financial_addresses.aba"),
+        z.literal("inbound_transfers.ach"),
+        z.literal("intra_stripe_flows"),
+        z.literal("outbound_payments.ach"),
+        z.literal("outbound_payments.us_domestic_wire"),
+        z.literal("outbound_transfers.ach"),
+        z.literal("outbound_transfers.us_domestic_wire"),
+        z.literal("remote_deposit_capture"),
+      ])
+    )
+    .optional(),
+  balance: treasuryFinancialAccountsResourceBalanceSchema,
+  country: z.string(),
+  created: z.number(),
+  features: treasuryFinancialAccountFeaturesSchema.optional(),
+  financial_addresses: z.array(
+    treasuryFinancialAccountsResourceFinancialAddressSchema
+  ),
+  id: z.string(),
+  livemode: z.boolean(),
+  metadata: z.record(z.string()).optional().nullable(),
+  object: z.literal("treasury.financial_account"),
+  pending_features: z
+    .array(
+      z.union([
+        z.literal("card_issuing"),
+        z.literal("deposit_insurance"),
+        z.literal("financial_addresses.aba"),
+        z.literal("inbound_transfers.ach"),
+        z.literal("intra_stripe_flows"),
+        z.literal("outbound_payments.ach"),
+        z.literal("outbound_payments.us_domestic_wire"),
+        z.literal("outbound_transfers.ach"),
+        z.literal("outbound_transfers.us_domestic_wire"),
+        z.literal("remote_deposit_capture"),
+      ])
+    )
+    .optional(),
+  platform_restrictions: treasuryFinancialAccountsResourcePlatformRestrictionsSchema
+    .optional()
+    .nullable(),
+  restricted_features: z
+    .array(
+      z.union([
+        z.literal("card_issuing"),
+        z.literal("deposit_insurance"),
+        z.literal("financial_addresses.aba"),
+        z.literal("inbound_transfers.ach"),
+        z.literal("intra_stripe_flows"),
+        z.literal("outbound_payments.ach"),
+        z.literal("outbound_payments.us_domestic_wire"),
+        z.literal("outbound_transfers.ach"),
+        z.literal("outbound_transfers.us_domestic_wire"),
+        z.literal("remote_deposit_capture"),
+      ])
+    )
+    .optional(),
+  status: z.union([z.literal("closed"), z.literal("open")]),
+  status_details: treasuryFinancialAccountsResourceStatusDetailsSchema,
+  supported_currencies: z.array(z.string()),
 });
